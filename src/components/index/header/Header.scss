@@ -1,0 +1,18 @@
+#header{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    background-color: var(--red-logo-color);
+    z-index: 1;
+    border-radius: 20px;
+
+    .container{
+        display: flex;
+        justify-content: flex-end;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+}

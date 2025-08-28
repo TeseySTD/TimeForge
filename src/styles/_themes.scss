@@ -1,0 +1,22 @@
+@use 'colors' as *;
+
+html{
+    --red-logo-color: #{$red-logo-color};
+}
+
+html[data-theme='dark'] {
+    --background-color: #{$darkgray};
+    --default-font-color: #{$smooth-white};
+    --footer-color: #{$background-logo-color};
+    --shine-logo-color: #{$red-logo-color};
+}
+
+html[data-theme='light'] {
+    --background-color: #{$white};
+    --default-font-color: #{$bluegray};    
+    --footer-color: #{$orange-logo-color};
+    --shine-logo-color: #{$background-logo-color};
+}
+
+
+
