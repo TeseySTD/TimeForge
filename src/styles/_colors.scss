@@ -1,13 +1,68 @@
-/* Dark Theme Colors */
-$darkgray: #242424;
-$smooth-white: rgba(255, 255, 255, 0.87);
+/* colors.scss */
 
-/*Light Theme Colors*/
+/* ===== BASE COLORS ===== */
+// Neutrals
+$gray-900: #111827;
+$gray-800: #1f2937;
+$gray-700: #374151;
+$gray-600: #4b5563;
+$gray-500: #6b7280;
+$gray-400: #9ca3af;
+$gray-300: #d1d5db;
+$gray-200: #e5e7eb;
+$gray-100: #f3f4f6;
+$gray-50: #f9fafb;
+
+$dark-surface: #242424;
 $white: #ffffff;
 $bluegray: #213547;
+$off-white: rgba(255, 255, 255, 0.87);
 
-/* Common Colors */
-$red-logo-color: #F23B3B;
-$orange-logo-color: #FC9B00;
-$background-logo-color: #111827;
+/* ===== BRAND COLORS ===== */
+// Primary brand
+$brand-red: #f23b3b;
+$brand-red-light: #ff6b6b;
+$brand-red-dark: #d63031;
 
+// Secondary brand
+$brand-orange: #fc9b00;
+$brand-orange-light: #fdcb6e;
+$brand-orange-dark: #e17055;
+
+/* ===== ACCENT COLORS ===== */
+$purple-light: #c6b1f8; 
+$purple: #a78bfa;
+$purple-dark: #8b5cf6;
+
+$blue-light: #60a5fa;
+$blue: #3b82f6;
+$blue-dark: #2563eb;
+
+$green-light: #4ade80;
+$green: #22c55e;
+$green-dark: #16a34a;
+
+$yellow-light: #fbbf24;
+$yellow: #f59e0b;
+$yellow-dark: #d97706;
+
+/* ===== SEMANTIC COLORS ===== */
+// Success states
+$success: $green;
+$success-light: $green-light;
+$success-dark: $green-dark;
+
+// Error states  
+$error: $brand-red;
+$error-light: $brand-red-light;
+$error-dark: $brand-red-dark;
+
+// Warning states
+$warning: $yellow;
+$warning-light: $yellow-light;
+$warning-dark: $yellow-dark;
+
+// Info states
+$info: $blue;
+$info-light: $blue-light;
+$info-dark: $blue-dark;

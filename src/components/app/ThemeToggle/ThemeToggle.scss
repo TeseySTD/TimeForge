@@ -1,0 +1,27 @@
+.theme-toggle {
+    position: relative;
+    display: flex;
+    align-items: center;
+    
+    .theme-switch {
+        .slider {
+            background: linear-gradient(45deg, #2d1b69, #11101d);
+
+            &::before {
+                background: linear-gradient(45deg, #6c7293, #9ca3af);
+                content:"🌙" ;
+             }
+
+        }
+        
+        input:checked + .slider {
+            background: linear-gradient(45deg, #ffd700, #ff6b35);
+            
+            &::before {
+                background: linear-gradient(45deg, #fff, #f0f0f0);
+                box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+                content: "☀️";
+            }
+        }
+    }
+}

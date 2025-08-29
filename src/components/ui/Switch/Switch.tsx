@@ -2,14 +2,16 @@ import type React from 'react'
 import './Switch.scss'
 
 interface Props{
-    switchEventHandler: () => void
+    switchEventHandler: () => void,
+    className?: string,
+    checked?: boolean   
 }
 
-const Switch: React.FC<Props> = ({ switchEventHandler }) => {
+const Switch: React.FC<Props> = ({ switchEventHandler, className, checked = false }) => {
     return (
         <div>
-            <label className="switch" title='Toggle theme'>
-                <input type="checkbox" onChange={switchEventHandler}/>
+            <label className={"switch " + className || ""} >
+                <input type="checkbox" onChange={switchEventHandler} checked={checked}/>
                 <span className="slider"></span>
             </label>
         </div>

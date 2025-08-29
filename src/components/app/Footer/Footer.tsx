@@ -3,7 +3,7 @@ const Footer = () => {
     return (
         <footer id='footer'>
             <div className="container">
-                <span>Made by TeseySTD</span>
+                <a href="https://github.com/TeseySTD">Made by TeseySTD</a>
             </div>
         </footer>
     )

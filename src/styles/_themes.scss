@@ -1,21 +1,89 @@
 @use 'colors' as *;
 
-html{
-    --red-logo-color: #{$red-logo-color};
+html {
+    /* Global brand colors */
+    --color-brand-primary: #{$brand-red};
+    --color-brand-secondary: #{$brand-orange};
+    --color-brand-secondary-light: #{$brand-orange-light};
+    
+    /* Semantic colors */
+    --color-success: #{$success};
+    --color-error: #{$error};
+    --color-warning: #{$warning};
+    --color-info: #{$info};
+    
+    /* Interactive states */
+    --color-success-hover: #{$success-dark};
+    --color-error-hover: #{$error-dark};
+    --color-warning-hover: #{$warning-dark};
+    --color-info-hover: #{$info-dark};
 }
 
 html[data-theme='dark'] {
-    --background-color: #{$darkgray};
-    --default-font-color: #{$smooth-white};
-    --footer-color: #{$background-logo-color};
-    --shine-logo-color: #{$red-logo-color};
+    /* Backgrounds */
+    --color-background: #{$dark-surface};
+    --color-surface: #{$gray-900};
+    --color-surface-hover: #{$gray-800};
+    
+    /* Text colors */
+    --color-text-primary: #{$off-white};
+    --color-text-secondary: #{$gray-300};
+    --color-text-muted: #{$gray-400};
+    
+    /* Interactive colors */
+    --color-accent: #{$purple-light};
+    --color-accent-hover: #{$purple};
+    --color-link: #{$purple-light};
+    --color-link-hover: #{$purple};
+    
+    /* Borders */
+    --color-border: #{$gray-700};
+    --color-border-hover: #{$gray-600};
+    
+    /* Special elements */
+    --color-logo-shine: #{$brand-red};
+    --color-footer: #{$gray-900};
 }
 
 html[data-theme='light'] {
-    --background-color: #{$white};
-    --default-font-color: #{$bluegray};    
-    --footer-color: #{$orange-logo-color};
-    --shine-logo-color: #{$background-logo-color};
+    /* Backgrounds */
+    --color-background: #{$white};
+    --color-surface: #{$gray-50};
+    --color-surface-hover: #{$gray-100};
+    
+    /* Text colors */
+    --color-text-primary: #{$bluegray};
+    --color-text-secondary: #{$gray-600};
+    --color-text-muted: #{$gray-500};
+    
+    /* Interactive colors */
+    --color-accent: #{$gray-900};
+    --color-accent-hover: #{$gray-700};
+    --color-link: #{$blue-dark};
+    --color-link-hover: #{$blue};
+    
+    /* Borders */
+    --color-border: #{$gray-300};
+    --color-border-hover: #{$gray-400};
+    
+    /* Special elements */
+    --color-logo-shine: #{$gray-900};
+    --color-footer: #{$brand-orange};
+}
+
+/* Timer-specific colors */
+html[data-theme='dark'] {
+    --color-timer-active: #{$green};
+    --color-timer-paused: #{$yellow};
+    --color-timer-break: #{$blue};
+    --color-timer-finished: #{$brand-red};
+}
+
+html[data-theme='light'] {
+    --color-timer-active: #{$green-dark};
+    --color-timer-paused: #{$yellow-dark};
+    --color-timer-break: #{$blue-dark};
+    --color-timer-finished: #{$brand-red};
 }
 
 
