@@ -13,7 +13,6 @@ const Header: React.FC = () => {
                     <ThemeToggle />
                 </div>
             </div>
-            <h1>Time Forge</h1>
         </header>
     )
 }
