@@ -1,0 +1,84 @@
+#timers {
+    margin: auto;
+    margin-top: 5%;
+    width: 500px;
+
+    #timers-list {
+        background-color: var(--color-surface);
+        margin-top: 5px;
+        width: inherit;
+        height: 350px;
+        position: fixed;
+        display: flex;
+        z-index: 2;
+        flex-direction: column;
+        align-items: center;
+        border-radius: 20px;
+
+        #timers-list-header,
+        #timers-list-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+            padding-top: 15px;
+            padding-bottom: 20px;
+            margin: 0;
+            width: 100%;
+            background-color: var(--color-surface-hover);
+        }
+
+        #timers-list-header {
+            overflow-x: scroll;
+            border-radius: 20px 20px 0 0;
+            border-bottom: 1px solid var(--color-border);
+
+            .timer-name {
+                padding: 8px 12px;
+                cursor: pointer;
+                border-radius: 8px;
+                transition: all 0.2s ease;
+                user-select: none;
+                color: var(--color-text-secondary);
+                font-weight: 600;
+                width: fit-content;
+                text-wrap: nowrap;
+
+                &:hover {
+                    background-color: var(--color-surface);
+                    color: var(--color-text-primary);
+                }
+
+                &.selected {
+                    background-color: var(--color-brand-primary);
+                    color: white;
+                }
+            }
+
+            .divider {
+                margin: 0 8px;
+                color: var(--color-border);
+                font-weight: 300;
+                user-select: none;
+            }
+        }
+
+        #timers-list-body {
+            flex: 1;
+            width: 100%;
+            padding: 20px;
+            overflow-y: auto;
+            line-height: 1px;
+        }
+
+        #timers-list-footer {
+            border-radius: 0 0 20px 20px;
+            border-top: 1px solid var(--color-border);
+        }
+    }
+}
+
+@media screen and (max-width: 600px) {
+    #timers {
+        width: 300px;
+    }
+}

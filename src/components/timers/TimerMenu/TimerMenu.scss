@@ -3,28 +3,26 @@
     justify-content: space-evenly;
     align-items: center;
     background-color: var(--color-brand-primary);
-    z-index: 1;
     border-radius: 10px;
-    width:40%;
     font-size: 17px;
     line-height: 1px;
-    margin: auto;
-    margin-top: 5%;
+
     padding: 0px 10px;
     overflow-x: scroll;
     white-space: nowrap;
     cursor: grab;
 
-    &::-webkit-scrollbar{
+    &::-webkit-scrollbar {
         display: none;
     }
+
     scrollbar-width: none;
 
-    &.grabbing{
+    &.grabbing {
         cursor: grabbing;
     }
 
-    .set{
+    .set {
         padding: 0px 20px;
         width: fit-content;
         margin: 10px;

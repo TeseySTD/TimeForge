@@ -3,7 +3,6 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
-  min-height: 100vh;
 }
 
 .logo {
@@ -15,10 +14,6 @@
 }
 .logo:hover {
   filter: drop-shadow(0 0 2em var(--color-logo-shine));
-}
-
-.card {
-  padding: 2em;
 }
 
 body {

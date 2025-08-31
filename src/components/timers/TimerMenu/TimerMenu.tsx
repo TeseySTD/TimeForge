@@ -1,14 +1,10 @@
 import TimersSet from '@/types/timersSet';
 import './TimerMenu.scss'
-import Timer from '@/types/timer';
 import { useEffect, useRef } from 'react';
 
-const testData = new Array(7).fill(null).map((_, index) =>
-    new TimersSet(index, `Set ${index + 1}`, [
-        new Timer('Timer 1', 1000, () => {}, () => {}),
-        new Timer('Timer 2', 2000, () => {}, () => {}),
-    ])
-);
+interface Props { 
+    timersSets: TimersSet[]
+}
 
 function setScrolling(ref: React.RefObject<HTMLDivElement | null>) {
     const el = ref.current!;
@@ -47,7 +43,7 @@ function setScrolling(ref: React.RefObject<HTMLDivElement | null>) {
     };
 }
 
-const TimerMenu: React.FC = () => {
+const TimerMenu: React.FC<Props> = ({ timersSets }) => {
 
     const ref = useRef<HTMLDivElement>(null);
     useEffect(() => {
@@ -55,7 +51,7 @@ const TimerMenu: React.FC = () => {
     }, []);
     return (
         <div id="timer-menu" ref={ref}>
-            {testData.map((set) => (
+            {timersSets.map((set) => (
                 <div className='set' key={set.id}>
                     <p>{set.name}</p>
                 </div>

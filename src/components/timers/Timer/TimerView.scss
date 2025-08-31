@@ -1,0 +1,18 @@
+.timer-view{
+    user-select: none;
+
+    .time-section{
+        font-weight: 400;
+        font-size: 120px;
+        line-height: 1;
+        user-select: all;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .timer-view{
+        .time-section{
+            font-size: 80px;
+        }
+    }
+}
