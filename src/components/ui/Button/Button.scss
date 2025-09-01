@@ -3,6 +3,8 @@
     align-items: center;
     justify-content: center;
     padding: 8px 16px;
+    height: 30px;
+    min-width: 25px;
     font-size: 14px;
     font-weight: 500;
     border: 1px solid var(--color-button-border);
@@ -16,9 +18,7 @@
     &:hover {
         background-color: var(--color-button-background-hover);
         border-color: var(--color-button-border-hover);
-        filter: drop-shadow(0 0 1px var(--color-button-focus));
-
-
+        filter: drop-shadow(0 0 3px var(--color-button-focus));
     }
 
     &:active {
@@ -38,4 +38,5 @@
             border-color: var(--color-button-disabled-border);
         }
     }
+
 }

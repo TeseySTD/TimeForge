@@ -1,5 +1,6 @@
-import type React from 'react'
-import './Button.scss'
+import React from 'react'
+import './IconButton.scss'
+import Button from '../Button/Button'
 
 interface Props {
     onClick?: () => void,
@@ -9,24 +10,23 @@ interface Props {
     type?: 'button' | 'submit' | 'reset'
 }
 
-const Button: React.FC<Props> = ({ 
+const IconButton: React.FC<Props> = ({ 
     onClick, 
     className, 
     disabled = false, 
     children, 
     type = 'button' 
 }) => {
-
-    return (
-        <button 
-            className={`button ${className || ""}`}
+    return(
+        <Button
             onClick={onClick}
+            className={`icon-button ${className || ""}`}
             disabled={disabled}
             type={type}
         >
             {children}
-        </button>
+        </Button>
     )
 }
 
-export default Button
+export default IconButton

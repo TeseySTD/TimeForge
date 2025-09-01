@@ -55,7 +55,7 @@ class Timer {
         this.isActive = true;
         this.pausedTimeInMs = undefined;
 
-        this.onTick(this);
+        this.onTick(this); //First tick
         this.startInterval();
     }
 

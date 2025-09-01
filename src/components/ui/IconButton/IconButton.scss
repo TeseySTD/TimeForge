@@ -1,0 +1,11 @@
+.icon-button{
+    padding: 1px 2px;
+
+    & svg,
+    & img {
+        width: inherit;
+        height: inherit;
+        margin: auto;
+        flex-shrink: 0;
+    }
+}

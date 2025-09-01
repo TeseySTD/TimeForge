@@ -5,6 +5,7 @@ import Timer from '@/types/timer';
 import { useState } from 'react';
 import TimerView from '../Timer/TimerView';
 import Button from '@/components/ui/Button/Button';
+import IconButton from '@/components/ui/IconButton/IconButton';
 
 const testData = new Array(7).fill(null).map((_, index) =>
     new TimersSet(index, `Set ${index + 1}`, [
@@ -47,9 +48,21 @@ const Timers: React.FC = () => {
                     }
                 </div>
                 <div id='timers-list-footer'>
-                    <Button className='start-timer-button' onClick={() => selectedTimer.startTimer()}>Start</Button>
-                    <Button className='pause-timer-button' onClick={() => selectedTimer.pauseTimer()}>Pause</Button>
-                    <Button className='reset-timer-button' onClick={() => selectedTimer.resetTimer()}>Reset</Button>
+                    <IconButton className='start-timer-button' onClick={() => selectedTimer.startTimer()}>
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z" />
+                        </svg>
+                    </IconButton>
+                    <IconButton className='pause-timer-button' onClick={() => selectedTimer.pauseTimer()}>
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
+                        </svg>
+                    </IconButton>
+                    <IconButton className='reset-timer-button' onClick={() => selectedTimer.resetTimer()}>
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z" />
+                        </svg>
+                    </IconButton>
                 </div>
             </div>
         </div>
