@@ -8,27 +8,32 @@ import IconButton from '@/components/ui/IconButton/IconButton';
 
 const testData = new Array(7).fill(null).map((_, index) =>
     new TimersSet(index, `Set ${index + 1}`, [
-        new Timer('Timer 1', 125),
-        new Timer('Timer 2', 5),
-        new Timer('Timer 3', 2 * 60 * 60 + 2),
+        new Timer(`Timer 1, ${index + 1}`, 125),
+        new Timer(`Timer 2, ${index + 1}`, 5),
+        new Timer(`Timer 3, ${index + 1}`, 2 * 60 * 60 + 2),
     ])
 );
 
 const Timers: React.FC = () => {
-    const t = testData[0];
+    const [t, setSelectedTimersSet] = useState<TimersSet>(testData[0]);
     const [selectedTimer, setSelectedTimer] = useState<Timer>(t.timers[0]);
     const [isSelectedTimerActive, setIsSelectedTimerActive] = useState(false);
 
+    const setSetAndFirstTimer = (set: TimersSet) => {
+        setSelectedTimersSet(set);
+        setSelectedTimer(set.timers[0]);
+    }
+
     useEffect(() => {
         setIsSelectedTimerActive(selectedTimer.isActive);
-        selectedTimer.onStateChange = (state: boolean) => {
+        selectedTimer.onStateChange = (state: boolean) => { 
             setIsSelectedTimerActive(state);
         }
     }, [selectedTimer])
 
     return (
         <div id="timers">
-            <TimerMenu timersSets={testData} />
+            <TimerMenu timersSets={testData} setSelectedCallback={setSetAndFirstTimer} />
             <div id='timers-list'>
                 <div id='timers-list-header'>
                     {

@@ -29,5 +29,15 @@
         border-radius: 20px;
         user-select: none;
         background-color: var(--color-surface);
+        border: 3px solid transparent; 
+        transition: all 0.2s ease;
+
+
+        &:hover {
+            background-color: var(--color-surface-hover);
+        }
+        &.selected {
+            border: 3px solid var(--color-border-hover);
+        }
     }
 }
