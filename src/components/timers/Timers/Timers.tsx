@@ -2,9 +2,8 @@ import './Timers.scss'
 import TimerMenu from "../TimerMenu/TimerMenu"
 import TimersSet from '@/types/timersSet';
 import Timer from '@/types/timer';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TimerView from '../Timer/TimerView';
-import Button from '@/components/ui/Button/Button';
 import IconButton from '@/components/ui/IconButton/IconButton';
 
 const testData = new Array(7).fill(null).map((_, index) =>
@@ -18,6 +17,14 @@ const testData = new Array(7).fill(null).map((_, index) =>
 const Timers: React.FC = () => {
     const t = testData[0];
     const [selectedTimer, setSelectedTimer] = useState<Timer>(t.timers[0]);
+    const [isSelectedTimerActive, setIsSelectedTimerActive] = useState(false);
+
+    useEffect(() => {
+        setIsSelectedTimerActive(selectedTimer.isActive);
+        selectedTimer.onStateChange = (state: boolean) => {
+            setIsSelectedTimerActive(state);
+        }
+    }, [selectedTimer])
 
     return (
         <div id="timers">
@@ -41,22 +48,26 @@ const Timers: React.FC = () => {
                     }
                 </div>
                 <div id='timers-list-body'>
-                    {
-                        t.timers.map((timer) => (
-                            <TimerView key={timer.name} timer={timer} isVisible={timer === selectedTimer} />
-                        ))
-                    }
+                    <TimerView timer={selectedTimer} />
                 </div>
                 <div id='timers-list-footer'>
-                    <IconButton className='start-timer-button' onClick={() => selectedTimer.startTimer()}>
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M8 5v14l11-7z" />
-                        </svg>
-                    </IconButton>
-                    <IconButton className='pause-timer-button' onClick={() => selectedTimer.pauseTimer()}>
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
-                        </svg>
+                    <IconButton className='start-timer-button' onClick={() => 
+                        {
+                            if(!isSelectedTimerActive)
+                                selectedTimer.startTimer();
+                            else
+                                selectedTimer.pauseTimer();
+                            setIsSelectedTimerActive(!isSelectedTimerActive);
+                        }}>
+                        {
+                            !isSelectedTimerActive ?
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M8 5v14l11-7z" />
+                                </svg> :
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
+                                </svg>
+                        }
                     </IconButton>
                     <IconButton className='reset-timer-button' onClick={() => selectedTimer.resetTimer()}>
                         <svg viewBox="0 0 24 24" fill="currentColor">

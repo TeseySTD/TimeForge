@@ -1,4 +1,5 @@
 class Timer {
+    id : number;
     name: string;
     timeInSec: number;
     isActive: boolean = false;
@@ -14,8 +15,10 @@ class Timer {
     onTick: (t: Timer) => void = () => { console.debug('tick') };
     onReset: (t: Timer) => void = () => { console.debug('reset') };
     onFinish: () => void = () => { console.debug('finish') };
+    onStateChange:(state: boolean) => void = () => { console.debug(`state change to ${this.isActive}')`) };
 
-    constructor(name: string, time: number) {
+    constructor(name: string, time: number, id = Math.random()) {
+        this.id = id;
         this.name = name;
         this.timeInSec = time;
     }
@@ -35,8 +38,7 @@ class Timer {
 
     get timeLeftInMs() {
         if (!this.endTime)
-            return this.pausedTimeInSec ?? this.timeInSec;
-
+            return this.pausedTimeInMs ?? this.timeInSec * 1000;
 
         const now = Date.now();
         const endTime = this.endTime.getTime();
@@ -56,6 +58,7 @@ class Timer {
         this.pausedTimeInMs = undefined;
 
         this.onTick(this); //First tick
+        this.onStateChange(this.isActive);
         this.startInterval();
     }
 
@@ -66,11 +69,13 @@ class Timer {
         this.isActive = false;
         this.pausedTimeInMs = this.timeLeftInMs;
         this.endTime = undefined;
+        this.onStateChange(this.isActive);
         this.clearInterval();
     }
 
     public stopTimer() {
         this.isActive = false;
+        this.onStateChange(this.isActive);
         this.isFinished = true;
         this.endTime = undefined;
         this.pausedTimeInMs = undefined;
@@ -105,6 +110,7 @@ class Timer {
         this.isActive = false;
         this.isFinished = true;
         this.clearInterval();
+        this.onStateChange(this.isActive);
         this.onFinish();
     }
 
