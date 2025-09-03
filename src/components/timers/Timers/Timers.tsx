@@ -26,7 +26,7 @@ const Timers: React.FC = () => {
 
     useEffect(() => {
         setIsSelectedTimerActive(selectedTimer.isActive);
-        selectedTimer.onStateChange = (state: boolean) => { 
+        selectedTimer.onStateChange = (state: boolean) => {
             setIsSelectedTimerActive(state);
         }
     }, [selectedTimer])
@@ -56,9 +56,9 @@ const Timers: React.FC = () => {
                     <TimerView timer={selectedTimer} />
                 </div>
                 <div id='timers-list-footer'>
-                    <IconButton className='start-timer-button' onClick={() => 
-                        {
-                            if(!isSelectedTimerActive)
+                    <IconButton className='start-timer-button'
+                        onClick={() => {
+                            if (!isSelectedTimerActive)
                                 selectedTimer.startTimer();
                             else
                                 selectedTimer.pauseTimer();

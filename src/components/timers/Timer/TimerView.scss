@@ -1,17 +1,65 @@
-.timer-view{
+.timer-view {
     user-select: none;
 
-    .time-section{
+    .time-section {
         font-weight: 400;
         font-size: 120px;
         line-height: 1;
         user-select: all;
     }
+
+    .progress-container {
+        width: 100%;
+        height: 6px;
+        background-color: transparent;
+        border-radius: 3px;
+        overflow: hidden;
+        margin-top:10px;
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg,
+                    var(--color-brand-primary) 0%,
+                    var(--color-brand-primary) 70%,
+                    var(--color-brand-secondary) 100%);
+            border-radius: 3px;
+            transition: width 0.05s ease-out;
+            position: relative;
+
+            // Shine effect
+            &::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                width: 20px;
+                background: linear-gradient(90deg,
+                        transparent,
+                        rgba(255, 255, 255, 0.3),
+                        transparent);
+                animation: shine 2s ease-in-out infinite;
+            }
+        }
+    }
+}
+
+@keyframes shine {
+    0%,
+    100% {
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+
+    50% {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 @media screen and (max-width: 600px) {
-    .timer-view{
-        .time-section{
+    .timer-view {
+        .time-section {
             font-size: 80px;
         }
     }

@@ -5,11 +5,16 @@ import Timer from '@/types/timer';
 interface Props {
     timer: Timer;
 }
-type TimerState = { hours: string; minutes: string; seconds: string };
+type TimerState = {
+    hours: string;
+    minutes: string;
+    seconds: string;
+    progress: number
+};
 
 const TimerView: React.FC<Props> = ({ timer }) => {
-    const [time, setTime] = useState<TimerState>({ hours: '00', minutes: '00', seconds: '00' });
-    
+    const [time, setTime] = useState<TimerState>({ hours: '00', minutes: '00', seconds: '00', progress: 100 });
+
     const timerRef = useRef<Timer>(timer);
     timerRef.current = timer;
 
@@ -18,16 +23,21 @@ const TimerView: React.FC<Props> = ({ timer }) => {
         if (!canBeRendered) return;
 
         const timeLeftInSec = t.timeLeftInSec;
+        const timeLeftInMs = t.timeLeftInMs;
+        const totalTimeInMs = t.timeInSec * 1000;
 
-        const hours = Math.floor(timeLeftInSec / 60 / 60)
-        const minutes = Math.floor((timeLeftInSec - hours * 60 * 60) / 60); 
+        const hours = Math.floor(timeLeftInSec / 60 / 60);
+        const minutes = Math.floor((timeLeftInSec - hours * 60 * 60) / 60);
         const seconds = (timeLeftInSec % 60);
+
+        const progress = timeLeftInMs > 0 ? (timeLeftInMs / totalTimeInMs) * 100 : 0;
 
         setTime(
             {
                 hours: hours.toString().padStart(2, '0'),
                 minutes: minutes.toString().padStart(2, '0'),
                 seconds: seconds.toString().padStart(2, '0'),
+                progress: progress
             }
         );
     }
@@ -47,7 +57,12 @@ const TimerView: React.FC<Props> = ({ timer }) => {
                 <span>{time.minutes}:</span>
                 <span>{time.seconds}</span>
             </div>
-
+            <div className='progress-container'>
+                <div
+                    className='progress-bar'
+                    style={{ width: `${time.progress}%` }}
+                />
+            </div>
         </div>
     )
 }
