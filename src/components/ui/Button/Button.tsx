@@ -6,7 +6,8 @@ interface Props {
     className?: string,
     disabled?: boolean,
     children: React.ReactNode,
-    type?: 'button' | 'submit' | 'reset'
+    type?: 'button' | 'submit' | 'reset',
+    title?: string
 }
 
 const Button: React.FC<Props> = ({ 
@@ -14,7 +15,8 @@ const Button: React.FC<Props> = ({
     className, 
     disabled = false, 
     children, 
-    type = 'button' 
+    type = 'button',
+    title = 'button'
 }) => {
 
     return (
@@ -23,6 +25,7 @@ const Button: React.FC<Props> = ({
             onClick={onClick}
             disabled={disabled}
             type={type}
+            title={title}
         >
             {children}
         </button>

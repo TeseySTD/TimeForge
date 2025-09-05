@@ -1,0 +1,107 @@
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    padding: 20px;
+    animation: fade-in 300ms ease-out forwards;
+    
+    &.closing {
+        animation: fade-out 300ms ease-out forwards;
+    }
+}
+
+@keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+.modal-card {
+    width: 100%;
+    max-width: 540px;
+    max-height: calc(100vh - 64px);
+    background: var(--color-surface, #fff);
+    color: var(--color-text-primary, #111);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    padding: 20px;
+    position: relative;
+    overflow: auto;
+    border: 1px solid var(--color-border, rgba(0, 0, 0, 0.06));
+
+    opacity: 0;
+    animation: slide-in-right 300ms cubic-bezier(.22, 1, .36, 1) forwards;
+
+    &.closing {
+        animation: slide-out-right 300ms cubic-bezier(.22, 1, .36, 1) forwards;
+    }
+}
+
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100vw);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-out-right {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100vw);
+        opacity: 0;
+    }
+}
+
+
+.modal-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    display: inline-grid;
+    place-items: center;
+    border: none;
+    background: transparent;
+    color: var(--color-text-secondary, #666);
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.modal-close:hover {
+    background: var(--color-surface-hover, rgba(0, 0, 0, 0.04));
+}
+
+.modal-body {}
+
+@media (max-width: 600px) {
+    .modal-card {
+        width: 75%;
+        height: 75%;
+        max-height: none;
+        border-radius: 8px;
+        padding: 16px;
+    }
+
+    .modal-overlay {
+        align-items: flex-end;
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.6));
+    }
+}

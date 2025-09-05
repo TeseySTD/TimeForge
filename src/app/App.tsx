@@ -9,13 +9,14 @@ function App() {
     <>
       <Header />
       <Timers/>
-      <h1>Time Forge</h1>
+      {/* TODO: Make routing */}
+      {/* <h1>Time Forge</h1>
       <div>
         <a href="/" target="_blank">
           <img src={logo} className="logo" alt="TimeForge logo" />
         </a>
       </div>
-      <h1>Web application for time tracking.</h1>
+      <h1>Web application for time tracking.</h1> */}
       <Footer />
     </>
   )
