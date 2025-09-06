@@ -18,11 +18,17 @@
             width: 50px;
             height: 300px;
             padding: 10px;
-            background-color: var(--color-surface);
+            background-color: var(--color-surface-hover);
             border-radius: 20px;
             z-index: 2;
             align-items: center;
             justify-content: center;
+
+            button{
+                width: 45px;
+                height: 45px;
+                border-width: 3px;
+            }
         }
 
         #timers-list {

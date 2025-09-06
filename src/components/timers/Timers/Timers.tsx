@@ -5,11 +5,10 @@ import Timer from '@/types/timer';
 import { useEffect, useState } from 'react';
 import TimerView from '../Timer/TimerView';
 import IconButton from '@/components/ui/IconButton/IconButton';
-import ModalWindow from '@/components/ui/ModalWindow/ModalWindow';
-import Button from '@/components/ui/Button/Button';
+import AddTimerSetModal from '../AddTimersSetModal/AddTimersSetModal';
 
 const testData = new Array(7).fill(null).map((_, index) =>
-    new TimersSet(index, `Set ${index + 1}`, [
+    new TimersSet(`Set ${index + 1}`, [
         new Timer(`Timer 1, ${index + 1}`, 125),
         new Timer(`Timer 2, ${index + 1}`, 5),
         new Timer(`Timer 3, ${index + 1}`, 2 * 60 * 60 + 2),
@@ -20,7 +19,8 @@ const Timers: React.FC = () => {
     const [t, setSelectedTimersSet] = useState<TimersSet>(testData[0]);
     const [selectedTimer, setSelectedTimer] = useState<Timer>(t.timers[0]);
     const [isSelectedTimerActive, setIsSelectedTimerActive] = useState(false);
-    const [isAddTimerSetModalOpened, setIsAddTimerSetModalOpened] = useState(false);
+    const [isModalOpened, setIsModalOpened] = useState(false);
+    const [modalState, setModalState] = useState<'add' | 'edit' | 'delete'>('add');
 
     const setSetAndFirstTimer = (set: TimersSet) => {
         setSelectedTimersSet(set);
@@ -86,7 +86,9 @@ const Timers: React.FC = () => {
                     </div>
                 </div>
                 <div id="timers-toolbar">
-                    <IconButton onClick={() => setIsAddTimerSetModalOpened(true)} title="Add timer set" >
+                    <IconButton
+                        onClick={() => { setIsModalOpened(true); setModalState('add'); }}
+                        title="Add timer set" >
                         <svg viewBox='0 0 24 24' fill='currentColor'>
                             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
                         </svg>
@@ -94,9 +96,13 @@ const Timers: React.FC = () => {
                 </div>
             </div>
 
-            <ModalWindow isOpened={isAddTimerSetModalOpened} onClose={() => setIsAddTimerSetModalOpened(false)}>
-                <p>Loren ipsum</p>
-            </ModalWindow>
+            {
+                isModalOpened && modalState === 'add' &&
+                <AddTimerSetModal 
+                    isOpened={isModalOpened} 
+                    onClose={() => setIsModalOpened(false)}
+                    addTimerSetCallback={(t) => {console.debug('add timer set: ', t)}} />
+            }
         </div>
     )
 }

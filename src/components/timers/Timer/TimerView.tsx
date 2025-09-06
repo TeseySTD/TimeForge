@@ -1,19 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
 import './TimerView.scss'
 import Timer from '@/types/timer';
+import { parseSecondsToTimeString } from '@/utils/timeUtils';
 
 interface Props {
     timer: Timer;
 }
 type TimerState = {
-    hours: string;
-    minutes: string;
-    seconds: string;
+    time: string
     progress: number
 };
 
 const TimerView: React.FC<Props> = ({ timer }) => {
-    const [time, setTime] = useState<TimerState>({ hours: '00', minutes: '00', seconds: '00', progress: 100 });
+    const [time, setTime] = useState<TimerState>({time:"00:00:00", progress: 100 });
 
     const timerRef = useRef<Timer>(timer);
     timerRef.current = timer;
@@ -26,17 +25,11 @@ const TimerView: React.FC<Props> = ({ timer }) => {
         const timeLeftInMs = t.timeLeftInMs;
         const totalTimeInMs = t.timeInSec * 1000;
 
-        const hours = Math.floor(timeLeftInSec / 60 / 60);
-        const minutes = Math.floor((timeLeftInSec - hours * 60 * 60) / 60);
-        const seconds = (timeLeftInSec % 60);
-
         const progress = timeLeftInMs > 0 ? (timeLeftInMs / totalTimeInMs) * 100 : 0;
 
         setTime(
             {
-                hours: hours.toString().padStart(2, '0'),
-                minutes: minutes.toString().padStart(2, '0'),
-                seconds: seconds.toString().padStart(2, '0'),
+                time: parseSecondsToTimeString(timeLeftInSec),
                 progress: progress
             }
         );
@@ -53,9 +46,7 @@ const TimerView: React.FC<Props> = ({ timer }) => {
         <div className='timer-view'>
             <h2>{timer.name}</h2>
             <div className='time-section'>
-                <span>{time.hours}:</span>
-                <span>{time.minutes}:</span>
-                <span>{time.seconds}</span>
+                <span>{time.time}</span>
             </div>
             <div className='progress-container'>
                 <div

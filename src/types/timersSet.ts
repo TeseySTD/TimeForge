@@ -5,7 +5,7 @@ class TimersSet{
     name: string;
     timers: Timer[] = [];
 
-    constructor(id: number, name: string, timers: Timer[]){
+    constructor(name: string, timers: Timer[], id = Math.random()) {
         if(timers.length === 0) throw new EmptyTimersError();
         this.id = id;
         this.name = name;
