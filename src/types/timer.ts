@@ -1,5 +1,8 @@
 class Timer {
     static readonly TICK_TIME: number = 100;
+    static readonly MIN_NAME_LENGTH = 2;
+    static readonly MAX_NAME_LENGTH = 30;
+    static readonly MIN_TIME_IN_SEC = 5;
 
     id: number;
     name: string;

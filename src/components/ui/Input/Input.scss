@@ -1,19 +1,44 @@
 .input-container {
+    $font-size: 17px;
+    font-size: $font-size;
     display: flex;
     flex-direction: column;
     align-items: start;
-    >label{
+
+    >label {
         margin-bottom: 5px;
     }
+
     >input {
+        font-size: calc(#{$font-size} - 2px);
         padding: 5px 10px;
         border-radius: 5px;
         border: 1.5px solid var(--color-border);
+        box-shadow: 0 0 3px var(--color-border-shadow);
         background-color: var(--color-surface);
         color: var(--color-text-secondary);
 
         &:hover {
             border-color: var(--color-border-hover);
+        }
+
+        &:focus {
+            outline: none;
+            border-color: var(--color-border-focus);
+        }
+
+        &.error{
+            border-color: var(--color-error);
+        }
+    }
+
+    .input-error {
+        font-size: calc(#{$font-size} - 3px);
+        margin-top: 2px;
+        color: var(--color-error);
+
+        &:before{
+            content: "⚠ ";
         }
     }
 }

@@ -39,6 +39,8 @@ html[data-theme='dark'] {
     /* Borders */
     --color-border: #{$gray-700};
     --color-border-hover: #{$gray-600};
+    --color-border-shadow: #{$gray-700};
+    --color-border-focus: #{$gray-800};
     
     /* Buttons */
     --color-button-background: #{$gray-800};
@@ -77,6 +79,8 @@ html[data-theme='light'] {
     /* Borders */
     --color-border: #{$gray-300};
     --color-border-hover: #{$gray-400};
+    --color-border-shadow: #{$gray-500};
+    --color-border-focus: #{$gray-600};
 
     /* Buttons */
     --color-button-background: #{$gray-50};

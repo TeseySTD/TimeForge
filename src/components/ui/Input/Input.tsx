@@ -1,40 +1,33 @@
 import './Input.scss'
 import React from 'react'
 
-interface Props {
+interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
     labelText?: string
-    type?: string
     className?: string
-    name?: string
-    defaultValue?: string
-    placeholder?: string
-    value?: string
-    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+    error?: string
 }
 
 const Input: React.FC<Props> = (
     {
         labelText,
-        type = 'text',
-        name,
         className = "",
-        defaultValue,
-        placeholder,
-        value,
-        onChange
+        error,
+        ...props
     }
 ) => {
+    const inputId = props.id || `input-${Math.random().toString(36)}`
     return (
         <div className={"input-container" + className}>
-            {labelText && <label htmlFor={name}>{labelText}</label>}
-            <input
-                type={type}
-                name={name}
-                defaultValue={defaultValue}
-                placeholder={placeholder}
-                value={value}
-                onChange={onChange}
+            {labelText && <label htmlFor={inputId}>{labelText}</label>}
+            <input className={error ? "error" : ""}
+                {...props}
+                id={inputId}
             />
+            {error && (
+                <span id={`${inputId}-error`} className="input-error" role="alert">
+                    {error}
+                </span>
+            )}
         </div>
     )
 }

@@ -16,6 +16,7 @@ const testData = new Array(7).fill(null).map((_, index) =>
 );
 
 const Timers: React.FC = () => {
+    const [timerSets, setTimerSets] = useState<TimersSet[]>(testData);
     const [t, setSelectedTimersSet] = useState<TimersSet>(testData[0]);
     const [selectedTimer, setSelectedTimer] = useState<Timer>(t.timers[0]);
     const [isSelectedTimerActive, setIsSelectedTimerActive] = useState(false);
@@ -36,7 +37,7 @@ const Timers: React.FC = () => {
 
     return (
         <div id="timers">
-            <TimerMenu timersSets={testData} setSelectedCallback={setSetAndFirstTimer} />
+            <TimerMenu timersSets={timerSets} setSelectedCallback={setSetAndFirstTimer} />
             <div id="timers-content">
                 <div id='timers-list'>
                     <div id='timers-list-header'>
@@ -101,7 +102,11 @@ const Timers: React.FC = () => {
                 <AddTimerSetModal 
                     isOpened={isModalOpened} 
                     onClose={() => setIsModalOpened(false)}
-                    addTimerSetCallback={(t) => {console.debug('add timer set: ', t)}} />
+                    addTimerSetCallback={(t) => {
+                        console.debug('add timer set: ', t);
+                        timerSets.push(t);
+                        setTimerSets([...timerSets]);
+                    }} />
             }
         </div>
     )

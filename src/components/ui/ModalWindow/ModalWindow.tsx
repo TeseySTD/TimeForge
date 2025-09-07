@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './ModalWindow.scss'
 
-interface Props {
+export interface Props {
     isOpened: boolean
     onClose: () => void
     children: React.ReactNode
     className?: string
 }
 
-const ModalWindow: React.FC<Props> = (
+export const ModalWindow: React.FC<Props> = (
     {
         isOpened,
         onClose,
@@ -83,4 +83,3 @@ const ModalWindow: React.FC<Props> = (
         </div>
     )
 }
-export default ModalWindow

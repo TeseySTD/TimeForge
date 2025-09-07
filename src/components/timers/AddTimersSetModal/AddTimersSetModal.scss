@@ -35,14 +35,18 @@
                     background-color: var(--color-surface-hover);
                     font-size: 14px;
 
-                    opacity: 0;
-                    animation-name: slideUpFadeIn;
-                    animation-duration: 300ms;
-                    animation-fill-mode: both;
+
                     transition: box-shadow 160ms ease, transform 160ms ease;
 
                     &:hover {
                         box-shadow: 0 0 3px var(--color-border-hover);
+                    }
+
+                    &.added {
+                        opacity: 0;
+                        animation-name: slideUpFadeIn;
+                        animation-duration: 300ms;
+                        animation-fill-mode: both;
                     }
 
                     &.removing {

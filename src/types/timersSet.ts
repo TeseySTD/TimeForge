@@ -1,6 +1,9 @@
 import type Timer from "./timer";
 
 class TimersSet{
+    static readonly MIN_NAME_LENGTH = 2;
+    static readonly MAX_NAME_LENGTH = 30;
+
     id: number;
     name: string;
     timers: Timer[] = [];

@@ -1,100 +1,126 @@
-import type React from 'react'
+import React, { useState } from 'react'
 import './AddTimersSetModal.scss'
-import ModalWindow from '@/components/ui/ModalWindow/ModalWindow'
+import { ModalWindow, type Props as ModalWindowProps } from '@/components/ui/ModalWindow/ModalWindow'
 import TimersSet from '@/types/timersSet'
 import Button from '@/components/ui/Button/Button'
-import Timer from '@/types/timer'
-import { useState } from 'react'
 import Input from '@/components/ui/Input/Input'
 import IconButton from '@/components/ui/IconButton/IconButton'
-import { parseSecondsToTimeString, parseTimeStringToNumber } from '@/utils/timeUtils'
+import Timer from '@/types/timer'
+import { parseTimeStringToNumber } from '@/utils/timeUtils'
+import { useForm, useFieldArray, Controller } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import { timersSetWithTimersSchema } from '@/validation/timersSetSchemas'
 
-interface Props {
-    isOpened: boolean
-    onClose: () => void
+type FormData = z.infer<typeof timersSetWithTimersSchema>
+
+const TIMERS_SET_NAME_DEFAULT = 'Timers Set'
+const TIMER_NAME_DEFAULT = 'Timer'
+const TIMER_TIME_DEFAULT = '00:01:00'
+const ANIMATION_REMOVE_MS = 260
+
+interface Props extends ModalWindowProps {
     addTimerSetCallback: (timerSet: TimersSet) => void
 }
 
-type AddedTimerEntry = {
-    id: number
-    timer: Timer
-    removing?: boolean
-}
-
-const ANIMATION_REMOVE_MS = 260
-
-
-const AddTimerSetModal: React.FC<Props> = ({ isOpened, onClose, addTimerSetCallback }) => {
-    const [addedTimers, setAddedTimers] = useState<AddedTimerEntry[]>([])
-    const [timerToAddName, setTimerToAddName] = useState('Timer')
-    const [timerToAddTime, setTimerToAddTime] = useState('00:00:00')
-
-    const addTimer = () => {
-        const timer = new Timer(timerToAddName, parseTimeStringToNumber(timerToAddTime))
-        const entry: AddedTimerEntry = {
-            id: Math.random(),
-            timer
+const AddTimerSetModal: React.FC<Props> = (
+    { isOpened, onClose, addTimerSetCallback }
+) => {
+    const {
+        control,
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors }
+    } = useForm<FormData>({
+        resolver: zodResolver(timersSetWithTimersSchema),
+        defaultValues: {
+            name: TIMERS_SET_NAME_DEFAULT,
+            timers: []
         }
-        setAddedTimers(prev => [...prev, entry])
-    }
+    })
 
-    const removeTimer = (id: number) => {
-        setAddedTimers(prev => prev.map(e => e.id === id ? { ...e, removing: true } : e))
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: 'timers'
+    })
+    const [removingIds, setRemovingIds] = useState<Set<string>>(new Set())
+    const onSubmit = (data: FormData) => {
+        if (data.timers.length === 0) {
+            alert('Add at least one timer')
+            return
+        }
 
-        setTimeout(() => {
-            setAddedTimers(prev => prev.filter(e => e.id !== id))
-        }, ANIMATION_REMOVE_MS)
-    }
-
-    const addTimersSet = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        const values = new FormData(e.currentTarget)
-        const name = values.get('name')?.toString() ?? 'TimerSet'
-        const timersSet = new TimersSet(name, addedTimers.map(e => e.timer))
-        addTimerSetCallback(timersSet)
+        const timers = data.timers.map(t => new Timer(t.timerName.trim(), parseTimeStringToNumber(t.timerTime)))
+        addTimerSetCallback(new TimersSet(data.name.trim(), timers))
+        reset()
         onClose()
     }
+    const handleRemoveWithAnimation = (id: string) => {
+        setRemovingIds(prev => {
+            const next = new Set(prev)
+            next.add(id)
+            return next
+        })
 
+        setTimeout(() => {
+            const idx = fields.findIndex(f => f.id === id)
+            if (idx !== -1) {
+                remove(idx)
+            }
+            setRemovingIds(prev => {
+                const next = new Set(prev)
+                next.delete(id)
+                return next
+            })
+        }, ANIMATION_REMOVE_MS)
+
+    }
     return (
         <ModalWindow isOpened={isOpened} onClose={onClose} className="add-timer-set-modal">
             <h2>Add timer set</h2>
-            <form onSubmit={addTimersSet}>
-                <Input labelText='Timer set name' name='name' placeholder="Timer set name" defaultValue={'TimerSet'} />
-                <div className="timers-list">
-                    <div className='added-timers'>
-                        {
-                            addedTimers.map((entry) => (
-                                <div
-                                    key={entry.id}
-                                    className={`added-timer-row ${entry.removing ? 'removing' : 'added'}`}
-                                >
-                                    <div className="added-timer-info">
-                                        <span className="timer-name-text">{entry.timer.name}</span>
-                                        <span className="timer-time-text">{parseSecondsToTimeString(entry.timer.timeInSec)}</span>
-                                    </div>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <Input
+                    labelText="Timer set name"
+                    {...register('name')}
+                    error={errors.name?.message}
+                />
 
-                                    <IconButton
-                                        onClick={() => removeTimer(entry.id)}
-                                        title='Remove timer'
-                                        aria-label={`Remove ${entry.timer.name}`}
-                                    >
-                                        <svg viewBox='0 0 24 24' fill='currentColor' width="18" height="18" aria-hidden>
-                                            <path d="M19 13H5v-2h14v2z" />
-                                        </svg>
-                                    </IconButton>
+                <div className="timers-list">
+                    <div className="added-timers">
+                        {fields.map((field, index) => (
+                            <div key={field.id} className={`added-timer-row ${removingIds.has(field.id) ? 'removing' : 'added'}`}>
+                                <div className="added-timer-info">
+                                    <Controller
+                                        control={control}
+                                        name={`timers.${index}.timerName`}
+                                        render={({ field }) => (
+                                            <Input {...field} error={errors.timers?.[index]?.timerName?.message} />
+                                        )}
+                                    />
+                                    <Controller
+                                        control={control}
+                                        name={`timers.${index}.timerTime`}
+                                        render={({ field }) => (
+                                            <Input {...field} error={errors.timers?.[index]?.timerTime?.message} />
+                                        )}
+                                    />
                                 </div>
-                            ))
-                        }
+                                <IconButton onClick={() => handleRemoveWithAnimation(field.id)} title="Remove">
+                                    <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden>
+                                        <path d="M19 13H5v-2h14v2z" />
+                                    </svg>
+                                </IconButton>
+                            </div>
+                        ))}
                     </div>
 
-                    <Input labelText='Timer name' name='timer-name' placeholder="Timer name" value={timerToAddName}
-                        onChange={(e) => setTimerToAddName(e.target.value)} />
-                    <Input labelText='Timer time' name='timer-time' placeholder="Timer time" value={timerToAddTime}
-                        onChange={(e) => setTimerToAddTime(e.target.value)} />
-                    <Button type="button" onClick={addTimer}>Add timer</Button>
+                    <Button type="button" onClick={() => append({ timerName: TIMER_NAME_DEFAULT, timerTime: TIMER_TIME_DEFAULT })}>
+                        Add timer
+                    </Button>
                 </div>
 
-                <Button type='submit'>Add</Button>
+                <Button type="submit">Add</Button>
             </form>
         </ModalWindow>
     )
