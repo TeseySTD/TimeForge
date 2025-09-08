@@ -4,7 +4,7 @@ import './ModalWindow.scss'
 export interface Props {
     isOpened: boolean
     onClose: () => void
-    children: React.ReactNode
+    children?: React.ReactNode
     className?: string
 }
 

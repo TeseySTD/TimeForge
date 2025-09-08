@@ -7,14 +7,14 @@
         display: flex;
         width: calc(100% + 75px); //toolbar width
         flex-direction: row;
-        gap: 5px;
+        gap: 10px;
         margin-top: 5px;
         align-items: center;
 
         #timers-toolbar {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 25px;
             width: 50px;
             height: 300px;
             padding: 10px;

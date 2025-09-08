@@ -1,0 +1,28 @@
+.delete-timer-set-modal {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px;
+    min-width: 400px;
+
+    .buttons {
+        display: flex;
+        flex-direction: row;
+        gap: 30px;
+        justify-content: center;
+
+        button {
+            border-width: 2px;
+        }
+
+        .delete {
+            color: white;
+            background-color: var(--color-error);
+
+            &:hover {
+                background-color: var(--color-error-hover);
+                filter: drop-shadow(0 0 3px var(--color-error-hover));
+            }
+        }
+    }
+}
