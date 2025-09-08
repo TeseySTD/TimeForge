@@ -1,24 +1,24 @@
 import type TimersSet from '@/types/timersSet';
-import './EditTimerSetModal.scss'
+import './EditTimersSetModal.scss'
 import { ModalWindow, type Props as ModalWindowProps } from '@/components/ui/ModalWindow/ModalWindow'
 import type React from 'react';
 import TimersSetForm from '../TimersSetForm/TimersSetForm';
 
 interface Props extends ModalWindowProps {
-    editTimerSetCallback: (timerSet: TimersSet) => void;
+    editTimersSetCallback: (timerSet: TimersSet) => void;
     timersSet: TimersSet
 }
 
-const EditTimerSetModal: React.FC<Props> = (
+const EditTimersSetModal: React.FC<Props> = (
     {
         isOpened,
         onClose,
-        editTimerSetCallback,
+        editTimersSetCallback,
         timersSet
     }
 ) => {
     const onSubmit = (timerSet: TimersSet) => {
-        editTimerSetCallback(timerSet)
+        editTimersSetCallback(timerSet)
         onClose()
     }
 
@@ -30,4 +30,4 @@ const EditTimerSetModal: React.FC<Props> = (
     )
 }
 
-export default EditTimerSetModal;
+export default EditTimersSetModal;

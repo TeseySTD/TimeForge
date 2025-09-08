@@ -3,10 +3,10 @@ import TimerMenu from "../TimerMenu/TimerMenu"
 import TimersSet from '@/types/timersSet';
 import Timer from '@/types/timer';
 import { useEffect, useState } from 'react';
-import TimerView from '../Timer/TimerView';
+import TimerView from '../TimerView/TimerView';
 import IconButton from '@/components/ui/IconButton/IconButton';
 import AddTimerSetModal from '../AddTimersSetModal/AddTimersSetModal';
-import EditTimerSetModal from '../EditTimerSetModal/EditTimerSetModal';
+import EditTimersSetModal from '../EditTimersSetModal/EditTimersSetModal';
 import DeleteTimersSetModal from '../DeleteTimersSetModal/DeleteTimersSetModal';
 
 const testData = new Array(7).fill(null).map((_, index) =>
@@ -18,7 +18,7 @@ const testData = new Array(7).fill(null).map((_, index) =>
 );
 
 const Timers: React.FC = () => {
-    const [timersSets, setTimerSets] = useState<TimersSet[]>(testData);
+    const [timersSets, setTimersSets] = useState<TimersSet[]>(testData);
     const [selectedTimersSet, setSelectedTimersSet] = useState<TimersSet>(testData[0]);
     const [selectedTimer, setSelectedTimer] = useState<Timer>(selectedTimersSet.timers[0]);
     const [isSelectedTimerActive, setIsSelectedTimerActive] = useState(false);
@@ -116,36 +116,37 @@ const Timers: React.FC = () => {
                 </div>
             </div>
 
+            {/* Modals */}
             {
                 isModalOpened && modalState === 'add' &&
                 <AddTimerSetModal
                     isOpened={isModalOpened}
                     onClose={() => setIsModalOpened(false)}
-                    addTimerSetCallback={(t) => {
-                        console.debug('add timer set: ', t);
+                    addTimersSetCallback={(t) => {
+                        console.debug('add timers set: ', t);
                         timersSets.push(t);
-                        setTimerSets([...timersSets]);
+                        setTimersSets([...timersSets]);
                     }} /> ||
                 isModalOpened && modalState === 'edit' &&
-                <EditTimerSetModal
+                <EditTimersSetModal
                     isOpened={isModalOpened}
                     onClose={() => setIsModalOpened(false)}
                     timersSet={selectedTimersSet}
-                    editTimerSetCallback={(t) => {
-                        console.debug('edit timer set: ', t);
+                    editTimersSetCallback={(t) => {
+                        console.debug('edit timers set: ', t);
                         const newTimersSets = timersSets.map(ts => ts.id === t.id ? t : ts);
                         setTimersSetAndFirstTimer(t);
-                        setTimerSets([...newTimersSets]);
+                        setTimersSets([...newTimersSets]);
                     }} /> ||
                 isModalOpened && modalState === 'delete' &&
                 <DeleteTimersSetModal
                     isOpened={isModalOpened}
                     onClose={() => setIsModalOpened(false)}
                     deleteTimersSetCallback={() => {
-                        console.debug('delete timer set: ', selectedTimersSet);
+                        console.debug('delete timers set: ', selectedTimersSet);
                         const newTimersSets = timersSets.filter(ts => ts.id !== selectedTimersSet.id);
                         setTimersSetAndFirstTimer(newTimersSets[0]);
-                        setTimerSets([...newTimersSets]);
+                        setTimersSets([...newTimersSets]);
                     }}/>
             }
         </div >

@@ -4,14 +4,14 @@ import TimersSet from '@/types/timersSet'
 import TimersSetForm from '../TimersSetForm/TimersSetForm'
 
 interface Props extends ModalWindowProps {
-    addTimerSetCallback: (timerSet: TimersSet) => void
+    addTimersSetCallback: (timerSet: TimersSet) => void
 }
 
 const AddTimerSetModal: React.FC<Props> = (
-    { isOpened, onClose, addTimerSetCallback }
+    { isOpened, onClose, addTimersSetCallback }
 ) => {
     const onSubmit = (timerSet: TimersSet) => {
-        addTimerSetCallback(timerSet)
+        addTimersSetCallback(timerSet)
         onClose()
     }
 
