@@ -8,18 +8,29 @@ import IconButton from '@/components/ui/IconButton/IconButton';
 import AddTimerSetModal from '../AddTimersSetModal/AddTimersSetModal';
 import EditTimersSetModal from '../EditTimersSetModal/EditTimersSetModal';
 import DeleteTimersSetModal from '../DeleteTimersSetModal/DeleteTimersSetModal';
+import { deleteTimersSet, getAllTimersSets, saveTimersSet } from '@/utils/storageUtils';
 
-const testData = new Array(7).fill(null).map((_, index) =>
-    new TimersSet(`Set ${index + 1}`, [
-        new Timer(`Timer 1, ${index + 1}`, 125),
-        new Timer(`Timer 2, ${index + 1}`, 6),
-        new Timer(`Timer 3, ${index + 1}`, 2 * 60 * 60 + 2),
-    ])
-);
+function initData() {
+    let storageData = getAllTimersSets();
+    if (storageData.length == 0) {
+        storageData = new Array(7).fill(null).map((_, index) =>
+            new TimersSet(`Set ${index + 1}`, [
+                new Timer(`Timer 1, ${index + 1}`, 125),
+                new Timer(`Timer 2, ${index + 1}`, 6),
+                new Timer(`Timer 3, ${index + 1}`, 2 * 60 * 60 + 2),
+            ])
+        );
+
+        storageData.forEach(s => saveTimersSet(s));
+    }
+
+    return storageData;
+}
 
 const Timers: React.FC = () => {
-    const [timersSets, setTimersSets] = useState<TimersSet[]>(testData);
-    const [selectedTimersSet, setSelectedTimersSet] = useState<TimersSet>(testData[0]);
+    const data = initData();
+    const [timersSets, setTimersSets] = useState<TimersSet[]>(data);
+    const [selectedTimersSet, setSelectedTimersSet] = useState<TimersSet>(data[0]);
     const [selectedTimer, setSelectedTimer] = useState<Timer>(selectedTimersSet.timers[0]);
     const [isSelectedTimerActive, setIsSelectedTimerActive] = useState(false);
     const [isModalOpened, setIsModalOpened] = useState(false);
@@ -36,6 +47,13 @@ const Timers: React.FC = () => {
             setIsSelectedTimerActive(state);
         }
     }, [selectedTimer])
+
+    useEffect(() => {
+        if (isModalOpened) {
+            selectedTimersSet.timers.forEach(timer => timer.pauseTimer())
+            setSelectedTimersSet(selectedTimersSet);
+        }
+    }, [isModalOpened]);
 
     return (
         <div id="timers">
@@ -67,8 +85,10 @@ const Timers: React.FC = () => {
                             onClick={() => {
                                 if (!isSelectedTimerActive)
                                     selectedTimer.startTimer();
-                                else
+                                else {
                                     selectedTimer.pauseTimer();
+                                    saveTimersSet(selectedTimersSet);
+                                }
                                 setIsSelectedTimerActive(!isSelectedTimerActive);
                             }}>
                             {
@@ -81,7 +101,11 @@ const Timers: React.FC = () => {
                                     </svg>
                             }
                         </IconButton>
-                        <IconButton className='reset-timer-button' onClick={() => selectedTimer.resetTimer()}>
+                        <IconButton className='reset-timer-button'
+                            onClick={() => {
+                                selectedTimer.resetTimer();
+                                saveTimersSet(selectedTimersSet);
+                            }}>
                             <svg viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z" />
                             </svg>
@@ -125,6 +149,7 @@ const Timers: React.FC = () => {
                     addTimersSetCallback={(t) => {
                         console.debug('add timers set: ', t);
                         timersSets.push(t);
+                        saveTimersSet(t)
                         setTimersSets([...timersSets]);
                     }} /> ||
                 isModalOpened && modalState === 'edit' &&
@@ -135,6 +160,7 @@ const Timers: React.FC = () => {
                     editTimersSetCallback={(t) => {
                         console.debug('edit timers set: ', t);
                         const newTimersSets = timersSets.map(ts => ts.id === t.id ? t : ts);
+                        saveTimersSet(t);
                         setTimersSetAndFirstTimer(t);
                         setTimersSets([...newTimersSets]);
                     }} /> ||
@@ -145,9 +171,10 @@ const Timers: React.FC = () => {
                     deleteTimersSetCallback={() => {
                         console.debug('delete timers set: ', selectedTimersSet);
                         const newTimersSets = timersSets.filter(ts => ts.id !== selectedTimersSet.id);
+                        deleteTimersSet(selectedTimersSet.id);
                         setTimersSetAndFirstTimer(newTimersSets[0]);
                         setTimersSets([...newTimersSets]);
-                    }}/>
+                    }} />
             }
         </div >
     )
