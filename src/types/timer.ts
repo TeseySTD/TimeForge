@@ -13,7 +13,9 @@ class Timer {
     private endTime?: Date;
     private pausedTimeInMs?: number;
     private get pausedTimeInSec() {
-        return this.pausedTimeInMs ? Math.ceil(this.pausedTimeInMs / 1000) : undefined;
+        if(!this.pausedTimeInMs) return undefined;
+        const seconds = Math.ceil(this.pausedTimeInMs / 1000) - 1; // -1 to account for the current second
+        return  seconds > 0 ? seconds : 0;
     }
     private intervalId?: number;
 
