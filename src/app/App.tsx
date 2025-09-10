@@ -3,6 +3,7 @@ import './App.scss'
 import Header from '@/components/app/Header/Header'
 import Footer from '@/components/app/Footer/Footer';
 import Timers from '@/components/timers/Timers/Timers';
+import ToastContainer from '@/components/ui/ToastContainer/ToastContainer';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
       </div>
       <h1>Web application for time tracking.</h1> */}
       <Footer />
+      <ToastContainer />
     </>
   )
 }

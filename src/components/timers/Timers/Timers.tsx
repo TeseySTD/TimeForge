@@ -9,6 +9,7 @@ import AddTimerSetModal from '../AddTimersSetModal/AddTimersSetModal';
 import EditTimersSetModal from '../EditTimersSetModal/EditTimersSetModal';
 import DeleteTimersSetModal from '../DeleteTimersSetModal/DeleteTimersSetModal';
 import { deleteTimersSet, getAllTimersSets, saveTimersSet } from '@/utils/storageUtils';
+import useToast from '@/hooks/useToast';
 
 function initData() {
     let storageData = getAllTimersSets();
@@ -52,8 +53,11 @@ const Timers: React.FC = () => {
         if (isModalOpened) {
             selectedTimersSet.timers.forEach(timer => timer.pauseTimer())
             setSelectedTimersSet(selectedTimersSet);
+            saveTimersSet(selectedTimersSet);
         }
     }, [isModalOpened]);
+
+    const [toast] = useToast();
 
     return (
         <div id="timers">
@@ -104,6 +108,7 @@ const Timers: React.FC = () => {
                         <IconButton className='reset-timer-button'
                             onClick={() => {
                                 selectedTimer.resetTimer();
+                                toast({titleText:"Timer reset",children:"Timer reset", type: 'warning', onClose: () => console.log('toast closed')});
                                 saveTimersSet(selectedTimersSet);
                             }}>
                             <svg viewBox="0 0 24 24" fill="currentColor">
