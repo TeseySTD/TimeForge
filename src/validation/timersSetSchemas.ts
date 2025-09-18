@@ -1,6 +1,6 @@
 import TimersSet from '@/types/timersSet'
 import {z} from 'zod'
-import { timerSchema } from '@/validation/timerShemas'
+import { timerSchema } from '@/validation/timerSchemas'
 
 export const timersSetSchema = z.object({
     name: z.string()

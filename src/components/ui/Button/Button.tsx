@@ -1,5 +1,7 @@
 import type React from 'react'
 import './Button.scss'
+import useSound from '@/hooks/useSound'
+import bubblePop from '@/assets/sounds/bubble-pop.wav'
 
 interface Props {
     onClick?: () => void,
@@ -18,11 +20,15 @@ const Button: React.FC<Props> = ({
     type = 'button',
     title = 'button'
 }) => {
+    const {play: playPopSound} = useSound(bubblePop);
 
     return (
         <button 
             className={`button ${className || ""}`}
-            onClick={onClick}
+            onClick={() => {
+                playPopSound(0.1); 
+                if (onClick) onClick();
+            }}
             disabled={disabled}
             type={type}
             title={title}

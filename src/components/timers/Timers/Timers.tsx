@@ -10,6 +10,8 @@ import EditTimersSetModal from '../EditTimersSetModal/EditTimersSetModal';
 import DeleteTimersSetModal from '../DeleteTimersSetModal/DeleteTimersSetModal';
 import { deleteTimersSet, getAllTimersSets, saveTimersSet } from '@/utils/storageUtils';
 import useToast from '@/hooks/useToast';
+import useSound from '@/hooks/useSound';
+import lofiAlert from '@/assets/sounds/lofi-alert.wav';
 
 function initData() {
     let storageData = getAllTimersSets();
@@ -36,11 +38,31 @@ const Timers: React.FC = () => {
     const [isSelectedTimerActive, setIsSelectedTimerActive] = useState(false);
     const [isModalOpened, setIsModalOpened] = useState(false);
     const [modalState, setModalState] = useState<'add' | 'edit' | 'delete'>('add');
+    const [toast] = useToast();
+    const {play: playTimeoutSound, stop: stopTimeoutSound} = useSound(lofiAlert);
 
     const setTimersSetAndFirstTimer = (set: TimersSet) => {
         setSelectedTimersSet(set);
         setSelectedTimer(set.timers[0]);
     }
+
+    useEffect(() => {
+        timersSets.forEach(set =>
+            set.timers.forEach(timer => {
+                timer.onFinish = () => {
+                    toast({
+                        titleText: 'Timer finished',
+                        children: timer.name,
+                        type: 'success',
+                        autoClose: 3000,
+                        onClose: () => stopTimeoutSound()
+                    });
+                    playTimeoutSound();
+                }
+            }));
+
+        setTimersSets(timersSets);
+    }, [timersSets])
 
     useEffect(() => {
         setIsSelectedTimerActive(selectedTimer.isActive);
@@ -56,8 +78,6 @@ const Timers: React.FC = () => {
             saveTimersSet(selectedTimersSet);
         }
     }, [isModalOpened]);
-
-    const [toast] = useToast();
 
     return (
         <div id="timers">
@@ -93,6 +113,7 @@ const Timers: React.FC = () => {
                                     selectedTimer.pauseTimer();
                                     saveTimersSet(selectedTimersSet);
                                 }
+                                stopTimeoutSound();
                                 setIsSelectedTimerActive(!isSelectedTimerActive);
                             }}>
                             {
@@ -108,7 +129,7 @@ const Timers: React.FC = () => {
                         <IconButton className='reset-timer-button'
                             onClick={() => {
                                 selectedTimer.resetTimer();
-                                toast({titleText:"Timer reset",children:"Timer reset", type: 'warning', onClose: () => console.log('toast closed')});
+                                stopTimeoutSound();
                                 saveTimersSet(selectedTimersSet);
                             }}>
                             <svg viewBox="0 0 24 24" fill="currentColor">

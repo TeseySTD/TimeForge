@@ -4,13 +4,16 @@ import './index.scss'
 import App from './app/App.tsx'
 import ThemeProvider from './contexts/ThemeProvider'
 import ToastProvider from './contexts/ToastProvider.tsx'
+import { SoundProvider } from './contexts/SoundProvider.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ThemeProvider>
-      <ToastProvider>
-        <App />
-      </ToastProvider>
+      <SoundProvider>
+        <ToastProvider>
+          <App />
+        </ToastProvider>
+      </SoundProvider>
     </ThemeProvider>
   </StrictMode>,
 )
