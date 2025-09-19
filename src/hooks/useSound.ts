@@ -68,6 +68,7 @@ export default function useSound(soundPath: string): ReturnType {
     isInitialized
   } = context;
 
+  
   const loadSound = useCallback(async () => {
     if (!soundPath) return;
 
@@ -93,6 +94,7 @@ export default function useSound(soundPath: string): ReturnType {
       });
 
       setIsLoaded(true);
+      console.debug(`Sound ${soundPath} loaded successfully`);
     } catch (err) {
       console.error(`Failed to load sound ${soundPath}:`, err);
     } finally {
@@ -141,6 +143,7 @@ export default function useSound(soundPath: string): ReturnType {
 
         const handleEnded = () => {
           instancesRef.current.delete(instanceId);
+          console.debug('Instance deleted, id: ', instanceId);
           if (currentInstanceRef.current === instanceId) {
             currentInstanceRef.current = null;
           }
@@ -150,6 +153,7 @@ export default function useSound(soundPath: string): ReturnType {
         source.onended = handleEnded;
 
         source.start();
+        console.debug('Instance created, id: ', instanceId);
 
       } catch (err) {
         console.error('Failed to play sound:', err);

@@ -12,6 +12,8 @@ import { deleteTimersSet, getAllTimersSets, saveTimersSet } from '@/utils/storag
 import useToast from '@/hooks/useToast';
 import useSound from '@/hooks/useSound';
 import lofiAlert from '@/assets/sounds/lofi-alert.wav';
+import { showNotification } from '@/utils/notificationUtils';
+
 
 function initData() {
     let storageData = getAllTimersSets();
@@ -58,6 +60,14 @@ const Timers: React.FC = () => {
                         onClose: () => stopTimeoutSound()
                     });
                     playTimeoutSound();
+                    showNotification(
+                        `Time Forge`,
+                        {
+                            body: `Timer ${timer.name} from timer set ${set.name} finished.`,
+                            icon: '/favicon.svg',
+                            silent: false
+                        }
+                    );
                 }
             }));
 
