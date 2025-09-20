@@ -14,17 +14,33 @@ import useSound from '@/hooks/useSound';
 import lofiAlert from '@/assets/sounds/lofi-alert.wav';
 import { showNotification } from '@/utils/notificationUtils';
 
+const defaultData = [
+    new TimersSet('Default Timers', [
+        new Timer('5 min', 60 * 5),
+        new Timer('10 min', 60 * 10),
+        new Timer('15 min', 60 * 15),
+        new Timer('20 min', 60 * 20)
+    ]),
+    new TimersSet('Pomodoro', [
+        new Timer('Pomodoro', 25 * 60),
+        new Timer('Short break', 5 * 60),
+        new Timer('Pomodoro', 25 * 60),
+        new Timer('Long break', 15 * 60)
+    ])
+]
+
+const testData = new Array(7).fill(null).map((_, index) =>
+    new TimersSet(`Set ${index + 1}`, [
+        new Timer(`Timer 1, ${index + 1}`, 125),
+        new Timer(`Timer 2, ${index + 1}`, 6),
+        new Timer(`Timer 3, ${index + 1}`, 2 * 60 * 60 + 2),
+    ])
+);
 
 function initData() {
     let storageData = getAllTimersSets();
     if (storageData.length == 0) {
-        storageData = new Array(7).fill(null).map((_, index) =>
-            new TimersSet(`Set ${index + 1}`, [
-                new Timer(`Timer 1, ${index + 1}`, 125),
-                new Timer(`Timer 2, ${index + 1}`, 6),
-                new Timer(`Timer 3, ${index + 1}`, 2 * 60 * 60 + 2),
-            ])
-        );
+        storageData = defaultData   
 
         storageData.forEach(s => saveTimersSet(s));
     }
@@ -41,7 +57,7 @@ const Timers: React.FC = () => {
     const [isModalOpened, setIsModalOpened] = useState(false);
     const [modalState, setModalState] = useState<'add' | 'edit' | 'delete'>('add');
     const [toast] = useToast();
-    const {play: playTimeoutSound, stop: stopTimeoutSound} = useSound(lofiAlert);
+    const { play: playTimeoutSound, stop: stopTimeoutSound } = useSound(lofiAlert);
 
     const setTimersSetAndFirstTimer = (set: TimersSet) => {
         setSelectedTimersSet(set);
