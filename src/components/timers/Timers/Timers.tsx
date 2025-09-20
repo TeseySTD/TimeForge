@@ -40,7 +40,7 @@ const testData = new Array(7).fill(null).map((_, index) =>
 function initData() {
     let storageData = getAllTimersSets();
     if (storageData.length == 0) {
-        storageData = defaultData   
+        storageData = defaultData;   
 
         storageData.forEach(s => saveTimersSet(s));
     }
@@ -80,7 +80,7 @@ const Timers: React.FC = () => {
                         `Time Forge`,
                         {
                             body: `Timer ${timer.name} from timer set ${set.name} finished.`,
-                            icon: '/favicon.svg',
+                            icon: '/TimeForge/favicon.svg',
                             silent: false
                         }
                     );
@@ -113,7 +113,7 @@ const Timers: React.FC = () => {
                     <div id='timers-list-header'>
                         {
                             selectedTimersSet.timers.map((timer, index) => (
-                                <span key={timer.name}>
+                                <span key={timer.id}>
                                     <span
                                         className={`timer-name ${selectedTimer === timer ? 'selected' : ''}`}
                                         onClick={() => setSelectedTimer(timer)}
