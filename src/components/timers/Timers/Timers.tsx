@@ -56,7 +56,7 @@ const Timers: React.FC = () => {
                         titleText: 'Timer finished',
                         children: timer.name,
                         type: 'success',
-                        autoClose: 3000,
+                        autoClose: 6000,
                         onClose: () => stopTimeoutSound()
                     });
                     playTimeoutSound();

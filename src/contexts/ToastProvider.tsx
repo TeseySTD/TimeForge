@@ -1,11 +1,11 @@
 import { useState } from "react";
 import ToastContext, { type StoredToast } from "./ToastContext"
-import {type Props as ToastProps} from "@/components/ui/Toast/Toast"
+import { Toast, type Props as ToastProps } from "@/components/ui/Toast/Toast"
 
-interface Props{
+interface Props {
     children: React.ReactNode
 }
-const ToastProvider: React.FC<Props> = ({children}) => {
+const ToastProvider: React.FC<Props> = ({ children }) => {
     const [toasts, setToasts] = useState<StoredToast[]>([]);
     const addToast = (toast: ToastProps) => {
         const storedToast = {
@@ -24,7 +24,27 @@ const ToastProvider: React.FC<Props> = ({children}) => {
             removeToast
         }}>
             {children}
-        </ToastContext.Provider>
+            <div id="toast-container"
+                style={{
+                    position: "fixed",
+                    top: "16px",
+                    right: "16px",
+                    zIndex: "1000"
+                }}>
+                {toasts.map(t => (
+                    <Toast
+                        key={t.id}
+                        {...t}
+                        onClose={() => {
+                            t.onClose?.();
+                            removeToast(t.id);
+                        }}
+                    >
+                        {t.children}
+                    </Toast>
+                ))}
+            </div>
+        </ToastContext.Provider >
     )
 }
 

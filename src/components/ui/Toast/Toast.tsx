@@ -63,7 +63,7 @@ export const Toast: React.FC<Props> = ({
             clearTimeout(timeoutRef.current);
 
         setIsClosing(true);
-        timeoutRef.current = setTimeout(() => {
+        setTimeout(() => {
             onClose?.();
         }, 220);
     };

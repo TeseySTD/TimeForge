@@ -3,7 +3,6 @@ import './App.scss'
 import Header from '@/components/app/Header/Header'
 import Footer from '@/components/app/Footer/Footer';
 import Timers from '@/components/timers/Timers/Timers';
-import ToastContainer from '@/components/ui/ToastContainer/ToastContainer';
 import { useEffect, useState } from 'react';
 import { checkBrowserSupport, checkNotificationPermission, requestNotificationPermission } from '@/utils/notificationUtils';
 import { ModalWindow } from '@/components/ui/ModalWindow/ModalWindow';
@@ -58,7 +57,6 @@ function App() {
       </div>
       <h1>Web application for time tracking.</h1> */}
       <Footer />
-      <ToastContainer />
       <ModalWindow
         isOpened={showNotificationModal}
         onClose={handleCloseModal}
