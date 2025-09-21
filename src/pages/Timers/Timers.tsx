@@ -1,13 +1,13 @@
 import './Timers.scss'
-import TimerMenu from "../TimerMenu/TimerMenu"
+import TimerMenu from "@/components/timers/TimerMenu/TimerMenu"
 import TimersSet from '@/types/timersSet';
 import Timer from '@/types/timer';
 import { useEffect, useState } from 'react';
-import TimerView from '../TimerView/TimerView';
+import TimerView from '@/components/timers/TimerView/TimerView';
 import IconButton from '@/components/ui/IconButton/IconButton';
-import AddTimerSetModal from '../AddTimersSetModal/AddTimersSetModal';
-import EditTimersSetModal from '../EditTimersSetModal/EditTimersSetModal';
-import DeleteTimersSetModal from '../DeleteTimersSetModal/DeleteTimersSetModal';
+import AddTimerSetModal from '@/components/timers/AddTimersSetModal/AddTimersSetModal';
+import EditTimersSetModal from '@/components/timers/EditTimersSetModal/EditTimersSetModal';
+import DeleteTimersSetModal from '@/components/timers/DeleteTimersSetModal/DeleteTimersSetModal';
 import { deleteTimersSet, getAllTimersSets, saveTimersSet } from '@/utils/storageUtils';
 import useToast from '@/hooks/useToast';
 import useSound from '@/hooks/useSound';
@@ -30,11 +30,21 @@ const defaultData = [
 ]
 
 const testData = new Array(7).fill(null).map((_, index) =>
-    new TimersSet(`Set ${index + 1}`, [
-        new Timer(`Timer 1, ${index + 1}`, 125),
-        new Timer(`Timer 2, ${index + 1}`, 6),
-        new Timer(`Timer 3, ${index + 1}`, 2 * 60 * 60 + 2),
-    ])
+    new TimersSet(`Set ${index + 1}`, index % 2 == 0 ?
+        [
+            new Timer(`Timer 1, Set ${index + 1}`, 125),
+            new Timer(`Timer 2, Set ${index + 1}`, 6),
+            new Timer(`Timer 3, Set ${index + 1}`, 2 * 60 * 60 + 2)
+        ] :
+        [
+            new Timer(`Timer 1, Set ${index + 1}`, 6),
+            new Timer(`Timer 2, Set ${index + 1}`, 125),
+            new Timer(`Timer 3, Set ${index + 1}`, 2 * 60 * 60 + 2),
+            new Timer(`Timer 4, Set ${index + 1}`, 2 * 60 * 60 + 2),
+            new Timer(`Timer 5, Set ${index + 1}`, 2 * 60 * 60 + 2),
+            new Timer(`Timer 6, Set ${index + 1}`, 2 * 60 * 60 + 2)
+        ],
+    )
 );
 
 function initData() {
