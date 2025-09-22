@@ -13,6 +13,7 @@ import useToast from '@/hooks/useToast';
 import useSound from '@/hooks/useSound';
 import lofiAlert from '@/assets/sounds/lofi-alert.wav';
 import { showNotification } from '@/utils/notificationUtils';
+import { useNavigate } from 'react-router';
 
 const defaultData = [
     new TimersSet('Default Timers', [
@@ -47,15 +48,29 @@ const testData = new Array(7).fill(null).map((_, index) =>
     )
 );
 
+const activeTimersRegistry = new Map<number, Timer>();
+
 function initData() {
     let storageData = getAllTimersSets();
     if (storageData.length == 0) {
-        storageData = defaultData;   
+        storageData = defaultData;
 
         storageData.forEach(s => saveTimersSet(s));
     }
+    const processedData = storageData.map(set => {
+        const processedTimers = set.timers.map(timer => {
+            const activeTimer = activeTimersRegistry.get(timer.id);
+            if (activeTimer) {
+                return activeTimer;
+            } else {
+                return timer;
+            }
+        });
 
-    return storageData;
+        return new TimersSet(set.name, processedTimers, set.id);
+    });
+
+    return processedData;
 }
 
 const Timers: React.FC = () => {
@@ -67,7 +82,8 @@ const Timers: React.FC = () => {
     const [isModalOpened, setIsModalOpened] = useState(false);
     const [modalState, setModalState] = useState<'add' | 'edit' | 'delete'>('add');
     const [toast] = useToast();
-    const { play: playTimeoutSound, stop: stopTimeoutSound } = useSound(lofiAlert);
+    const { play: playTimeoutSound, stop: stopTimeoutSound, isPlaying } = useSound(lofiAlert);
+    const navigate = useNavigate();
 
     const setTimersSetAndFirstTimer = (set: TimersSet) => {
         setSelectedTimersSet(set);
@@ -77,6 +93,7 @@ const Timers: React.FC = () => {
     useEffect(() => {
         timersSets.forEach(set =>
             set.timers.forEach(timer => {
+                activeTimersRegistry.set(timer.id, timer);
                 timer.onFinish = () => {
                     toast({
                         titleText: 'Timer finished',
@@ -85,7 +102,6 @@ const Timers: React.FC = () => {
                         autoClose: 6000,
                         onClose: () => stopTimeoutSound()
                     });
-                    playTimeoutSound();
                     showNotification(
                         `Time Forge`,
                         {
@@ -94,6 +110,12 @@ const Timers: React.FC = () => {
                             silent: false
                         }
                     );
+                    navigate('/timers', { replace: true });
+                    if(!isPlaying()){ //Other timer not played
+                        playTimeoutSound();
+                        setSelectedTimersSet(set);
+                        setSelectedTimer(timer);
+                    }
                 }
             }));
 
