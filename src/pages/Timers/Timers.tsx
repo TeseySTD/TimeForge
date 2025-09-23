@@ -14,6 +14,7 @@ import useSound from '@/hooks/useSound';
 import lofiAlert from '@/assets/sounds/lofi-alert.wav';
 import { showNotification } from '@/utils/notificationUtils';
 import { useNavigate } from 'react-router';
+import TimersList from '@/components/timers/TimersList/TimersList';
 
 const defaultData = [
     new TimersSet('Default Timers', [
@@ -90,6 +91,23 @@ const Timers: React.FC = () => {
         setSelectedTimer(set.timers[0]);
     }
 
+    const startTimerCallback = () => {
+        if (!isSelectedTimerActive)
+            selectedTimer.startTimer();
+        else {
+            selectedTimer.pauseTimer();
+            saveTimersSet(selectedTimersSet);
+        }
+        stopTimeoutSound();
+        setIsSelectedTimerActive(!isSelectedTimerActive);
+    }
+
+    const resetTimerCallback = () => {
+        selectedTimer.resetTimer();
+        stopTimeoutSound();
+        saveTimersSet(selectedTimersSet);
+    }
+
     useEffect(() => {
         timersSets.forEach(set =>
             set.timers.forEach(timer => {
@@ -111,7 +129,7 @@ const Timers: React.FC = () => {
                         }
                     );
                     navigate('/timers', { replace: true });
-                    if(!isPlaying()){ //Other timer not played
+                    if (!isPlaying()) { //Other timer not played
                         playTimeoutSound();
                         setSelectedTimersSet(set);
                         setSelectedTimer(timer);
@@ -141,61 +159,14 @@ const Timers: React.FC = () => {
         <div id="timers">
             <TimerMenu timersSets={timersSets} setSelectedCallback={setTimersSetAndFirstTimer} />
             <div id="timers-content">
-                <div id='timers-list'>
-                    <div id='timers-list-header'>
-                        {
-                            selectedTimersSet.timers.map((timer, index) => (
-                                <span key={timer.id}>
-                                    <span
-                                        className={`timer-name ${selectedTimer === timer ? 'selected' : ''}`}
-                                        onClick={() => setSelectedTimer(timer)}
-                                    >
-                                        {timer.name}
-                                    </span>
-                                    {index < selectedTimersSet.timers.length - 1 && (
-                                        <span className="divider">|</span>
-                                    )}
-                                </span>
-                            ))
-                        }
-                    </div>
-                    <div id='timers-list-body'>
-                        <TimerView timer={selectedTimer} />
-                    </div>
-                    <div id='timers-list-footer'>
-                        <IconButton className='start-timer-button'
-                            onClick={() => {
-                                if (!isSelectedTimerActive)
-                                    selectedTimer.startTimer();
-                                else {
-                                    selectedTimer.pauseTimer();
-                                    saveTimersSet(selectedTimersSet);
-                                }
-                                stopTimeoutSound();
-                                setIsSelectedTimerActive(!isSelectedTimerActive);
-                            }}>
-                            {
-                                !isSelectedTimerActive ?
-                                    <svg viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M8 5v14l11-7z" />
-                                    </svg> :
-                                    <svg viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
-                                    </svg>
-                            }
-                        </IconButton>
-                        <IconButton className='reset-timer-button'
-                            onClick={() => {
-                                selectedTimer.resetTimer();
-                                stopTimeoutSound();
-                                saveTimersSet(selectedTimersSet);
-                            }}>
-                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z" />
-                            </svg>
-                        </IconButton>
-                    </div>
-                </div>
+                <TimersList 
+                    timersSet={selectedTimersSet}
+                    selectedTimer={selectedTimer}
+                    isSelectedTimerActive={isSelectedTimerActive}
+                    selectTimerCallback={setSelectedTimer}
+                    startTimerCallback={startTimerCallback}
+                    resetTimerCallback={resetTimerCallback}
+                />
                 <div id="timers-toolbar">
                     <IconButton
                         onClick={() => { setIsModalOpened(true); setModalState('add'); }}
