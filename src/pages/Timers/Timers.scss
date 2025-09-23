@@ -11,6 +11,10 @@
         margin-top: 5px;
         align-items: center;
 
+        #timers-list-placeholder {
+            width: 50px;
+        }
+
         #timers-toolbar {
             display: flex;
             flex-direction: column;
@@ -24,14 +28,50 @@
             align-items: center;
             justify-content: center;
 
-            button{
+            button {
                 width: 45px;
                 height: 45px;
                 border-width: 3px;
             }
         }
 
-       
+
+    }
+}
+
+#no-timers-message-container {
+    display: flex;
+    height: 500px;
+    flex-direction: column;
+    justify-content: center;
+    user-select: none;
+
+    .no-timers-message {
+        text-align: center;
+        text-wrap: nowrap;
+
+        &.clickable {
+            animation: blink 2s infinite;
+
+            &:hover {
+                cursor: pointer;
+                animation: none;
+            }
+        }
+    }
+}
+
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.2;
+    }
+
+    100% {
+        opacity: 1;
     }
 }
 

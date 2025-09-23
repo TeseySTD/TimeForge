@@ -72,7 +72,7 @@ const TimerMenu: React.FC<Props> = ({ timersSets, setSelectedCallback }) => {
     }, []);
     return (
         <div id="timer-menu" ref={ref}>
-            {timersSets.map((set) => (
+            {timersSets.length > 0 && timersSets.map((set) => (
                 <div className={`set ${set.id === selectedTimerSet.id ? 'selected' : ''}`} key={set.id}
                     onClick={() => {
                         setSelectedTimerSet(set);
@@ -81,7 +81,8 @@ const TimerMenu: React.FC<Props> = ({ timersSets, setSelectedCallback }) => {
                     }>
                     <p>{set.name}</p>
                 </div>
-            ))}
+            ))
+            }
         </div>
     )
 }
