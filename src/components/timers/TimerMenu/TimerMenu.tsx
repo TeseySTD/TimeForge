@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 interface Props {
     timersSets: TimersSet[]
     setSelectedCallback: (set: TimersSet) => void
+    selectedTimersSet?: TimersSet
 }
 
 function setScrolling(ref: React.RefObject<HTMLDivElement | null>) {
@@ -62,20 +63,22 @@ function setScrolling(ref: React.RefObject<HTMLDivElement | null>) {
     };
 }
 
-const TimerMenu: React.FC<Props> = ({ timersSets, setSelectedCallback }) => {
-    const [selectedTimerSet, setSelectedTimerSet] = useState<TimersSet>(timersSets[0]);
-
+const TimerMenu: React.FC<Props> = ({ timersSets, selectedTimersSet, setSelectedCallback }) => {
     const ref = useRef<HTMLDivElement>(null);
-
+    // console.log('TimerMenu render:', {
+    //     timersSetLength: timersSets?.length || 0,
+    //     selectedTimerSetId: selectedTimersSet?.id,
+    //     selectedTimerSetName: selectedTimersSet?.name
+    // });
     useEffect(() => {
         return setScrolling(ref);
     }, []);
+    
     return (
         <div id="timer-menu" ref={ref}>
             {timersSets.length > 0 && timersSets.map((set) => (
-                <div className={`set ${set.id === selectedTimerSet.id ? 'selected' : ''}`} key={set.id}
+                <div className={`set ${selectedTimersSet && set.id === selectedTimersSet.id ? 'selected' : ''}`} key={set.id}
                     onClick={() => {
-                        setSelectedTimerSet(set);
                         setSelectedCallback(set);
                     }
                     }>
