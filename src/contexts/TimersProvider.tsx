@@ -2,7 +2,7 @@ import Timer from "@/types/timer";
 import TimersSet from "@/types/timersSet";
 import type React from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { TimersContext } from "./TimersContext";
+import { TimersContext, type lastSelectedDataType } from "./TimersContext";
 import { getAllTimersSets, saveTimersSet } from "@/utils/storageUtils";
 
 const defaultData = [
@@ -42,6 +42,7 @@ const testData = new Array(7).fill(null).map((_, index) =>
 export const TimersProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [isLoadedFromStorage, setIsLoadedFromStorage] = useState(false);
     const [activeTimers, setActiveTimers] = useState<Map<number, Timer>>(new Map());
+    const [lastSelected, setLastSelected] = useState<lastSelectedDataType>({});
 
     const loadTimersSets = useCallback(() => {
         let storageData = getAllTimersSets();
@@ -60,8 +61,10 @@ export const TimersProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     const value = useMemo(() => ({
         activeTimers,
         setActiveTimers,
+        lastSelected,
+        setLastSelected,
         loadTimersSets
-    }), [activeTimers, loadTimersSets]);
+    }), [activeTimers, lastSelected, loadTimersSets]);
 
     return <TimersContext.Provider value={value}>{children}</TimersContext.Provider>;
 }

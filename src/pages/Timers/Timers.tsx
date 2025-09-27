@@ -7,7 +7,7 @@ import IconButton from '@/components/ui/IconButton/IconButton';
 import AddTimerSetModal from '@/components/timers/AddTimersSetModal/AddTimersSetModal';
 import EditTimersSetModal from '@/components/timers/EditTimersSetModal/EditTimersSetModal';
 import DeleteTimersSetModal from '@/components/timers/DeleteTimersSetModal/DeleteTimersSetModal';
-import { deleteTimersSet, getAllTimersSets, saveTimersSet } from '@/utils/storageUtils';
+import { deleteTimersSet, saveTimersSet } from '@/utils/storageUtils';
 import useToast from '@/hooks/useToast';
 import useSound from '@/hooks/useSound';
 import lofiAlert from '@/assets/sounds/lofi-alert.wav';
@@ -17,7 +17,7 @@ import TimersList from '@/components/timers/TimersList/TimersList';
 import { TimersContext } from '@/contexts/TimersContext';
 
 const Timers: React.FC = () => {
-    const { loadTimersSets, activeTimers: activeTimersRegistry, setActiveTimers } = useContext(TimersContext);
+    const { loadTimersSets, activeTimers: activeTimersRegistry, setActiveTimers, lastSelected, setLastSelected } = useContext(TimersContext);
     const [timersSets, setTimersSets] = useState<TimersSet[]>([]);
     const { timersSetId: selectedTimersSetId, timerId: selectedTimerId } = useParams();
     const [selectedTimersSet, setSelectedTimersSet] = useState<TimersSet | undefined>(undefined);
@@ -36,7 +36,7 @@ const Timers: React.FC = () => {
             navigate(`/timers/${set.id}`, { replace: true });
     }
 
-    const setTimerAndItsSetWithRoute = (timer: Timer | undefined) => {
+    const setTimerTimersListCallback = (timer: Timer | undefined) => {
         setSelectedTimer(timer);
         if (timer && selectedTimersSet && selectedTimersSet.timers.some(t => t.id === timer.id))
             navigate(`/timers/${selectedTimersSet.id}/${timer.id}`, { replace: true });
@@ -160,6 +160,14 @@ const Timers: React.FC = () => {
 
         setTimersSets(processedData);
         if (!selectedTimersSetId) { //Check if any route params are set
+            console.log('No route params');
+
+            console.log('Last selected', lastSelected);
+            if (lastSelected.timersSetId && lastSelected.timerId) {
+                setSelectedTimersSet(processedData.find(set => set.id === lastSelected.timersSetId));
+                setSelectedTimer(processedData.find(set => set.id === lastSelected.timersSetId)?.timers.find(timer => timer.id === lastSelected.timerId));
+                return;
+            }
             setSelectedTimersSet(processedData.length > 0 ? processedData[0] : undefined);
             setSelectedTimer(processedData[0]?.timers[0] ?? undefined);
         }
@@ -178,12 +186,17 @@ const Timers: React.FC = () => {
     }, [timersSets])
 
     useEffect(() => {
+        setLastSelected({ timersSetId: selectedTimersSet?.id ?? undefined, timerId: selectedTimer?.id ?? undefined });
         if (!selectedTimer) return;
         setIsSelectedTimerActive(selectedTimer.isActive);
         selectedTimer.onStateChange = (state: boolean) => {
             setIsSelectedTimerActive(state);
         }
     }, [selectedTimer])
+
+    useEffect(() => {
+        setLastSelected({ timersSetId: selectedTimersSet?.id ?? undefined, timerId: selectedTimer?.id ?? undefined });
+    }, [selectedTimersSet])
 
     useEffect(() => {
         if (!selectedTimersSet) return;
@@ -204,7 +217,7 @@ const Timers: React.FC = () => {
                             timersSet={selectedTimersSet}
                             selectedTimer={selectedTimer}
                             isSelectedTimerActive={isSelectedTimerActive}
-                            selectTimerCallback={setTimerAndItsSetWithRoute}
+                            selectTimerCallback={setTimerTimersListCallback}
                             startTimerCallback={startTimerCallback}
                             resetTimerCallback={resetTimerCallback}
                         />
