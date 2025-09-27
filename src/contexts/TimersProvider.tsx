@@ -15,7 +15,6 @@ const defaultData = [
     new TimersSet('Pomodoro', [
         new Timer('Pomodoro', 25 * 60),
         new Timer('Short break', 5 * 60),
-        new Timer('Pomodoro', 25 * 60),
         new Timer('Long break', 15 * 60)
     ])
 ]
