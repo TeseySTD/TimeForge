@@ -12,13 +12,14 @@ import useToast from '@/hooks/useToast';
 import useSound from '@/hooks/useSound';
 import lofiAlert from '@/assets/sounds/lofi-alert.wav';
 import { showNotification } from '@/utils/notificationUtils';
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import TimersList from '@/components/timers/TimersList/TimersList';
 import { TimersContext } from '@/contexts/TimersContext';
 
 const Timers: React.FC = () => {
     const { loadTimersSets, activeTimers: activeTimersRegistry, setActiveTimers } = useContext(TimersContext);
     const [timersSets, setTimersSets] = useState<TimersSet[]>([]);
+    const { timersSetId: selectedTimersSetId, timerId: selectedTimerId } = useParams();
     const [selectedTimersSet, setSelectedTimersSet] = useState<TimersSet | undefined>(undefined);
     const [selectedTimer, setSelectedTimer] = useState<Timer | undefined>(undefined);
     const [isSelectedTimerActive, setIsSelectedTimerActive] = useState(false);
@@ -28,9 +29,17 @@ const Timers: React.FC = () => {
     const { play: playTimeoutSound, stop: stopTimeoutSound, isPlaying } = useSound(lofiAlert);
     const navigate = useNavigate();
 
-    const setTimersSetAndFirstTimer = (set: TimersSet | undefined) => {
+    const setTimersSetAndFirstTimerWithRoute = (set: TimersSet | undefined) => {
         setSelectedTimersSet(set);
         setSelectedTimer(set?.timers[0] ?? undefined);
+        if (set)
+            navigate(`/timers/${set.id}`, { replace: true });
+    }
+
+    const setTimerAndItsSetWithRoute = (timer: Timer | undefined) => {
+        setSelectedTimer(timer);
+        if (timer && selectedTimersSet && selectedTimersSet.timers.some(t => t.id === timer.id))
+            navigate(`/timers/${selectedTimersSet.id}/${timer.id}`, { replace: true });
     }
 
     const startTimerCallback = () => {
@@ -54,6 +63,86 @@ const Timers: React.FC = () => {
         saveTimersSet(selectedTimersSet);
     }
 
+    const finishTimerCallback = (timer: Timer, set: TimersSet) => {
+        toast({
+            titleText: 'Timer finished',
+            children: timer.name,
+            type: 'success',
+            autoClose: 6000,
+            onClose: () => stopTimeoutSound()
+        });
+        showNotification(
+            `Time Forge`,
+            {
+                body: `Timer ${timer.name} from timer set ${set.name} finished.`,
+                icon: '/TimeForge/favicon.svg',
+                silent: false
+            }
+        );
+
+        if (!isPlaying()) { //Other timer not played
+            navigate(
+                `/timers/${set.id}/${timer.id}`,
+                { replace: true }
+            );
+            playTimeoutSound();
+            setSelectedTimersSet(set);
+            setSelectedTimer(timer);
+        }
+    }
+
+    const handleRoutChange = (timersSets: TimersSet[]) => {
+        let selectedSet: TimersSet | undefined;
+        let selectedTimer: Timer | undefined;
+
+        if (!selectedTimersSetId)
+            selectedSet = timersSets[0];
+        else
+            selectedSet = timersSets.find(set => set.id === +selectedTimersSetId);
+        if (!selectedSet) {
+            navigate('/404', { replace: true });
+            return;
+        }
+
+        if (!selectedTimerId)
+            selectedTimer = selectedSet.timers[0];
+        else
+            selectedTimer = selectedSet.timers.find(timer => timer.id === +selectedTimerId);
+        if (!selectedTimer) {
+            navigate('/404', { replace: true });
+            return;
+        }
+
+        setSelectedTimersSet(selectedSet);
+        setSelectedTimer(selectedTimer);
+    }
+
+    const addSetCallback = (t: TimersSet) => {
+        console.debug('add timers set: ', t);
+        timersSets.push(t);
+        saveTimersSet(t)
+        setTimersSets([...timersSets]);
+        if (!selectedTimersSet)
+            setTimersSetAndFirstTimerWithRoute(t);
+    }
+
+    const editSetCallback = (t: TimersSet) => {
+        console.debug('edit timers set: ', t);
+        const newTimersSets = timersSets.map(ts => ts.id === t.id ? t : ts);
+        saveTimersSet(t);
+        setTimersSetAndFirstTimerWithRoute(t);
+        setTimersSets([...newTimersSets]);
+    }
+
+    const deleteSetCallback = (t: TimersSet) => {
+        console.debug('delete timers set: ', t);
+        const newTimersSets = timersSets.filter(ts => ts.id !== t.id);
+        deleteTimersSet(t.id);
+        setTimersSetAndFirstTimerWithRoute(newTimersSets.length > 0 ? newTimersSets[0] : undefined);
+        setTimersSets([...newTimersSets]);
+    }
+
+
     useEffect(() => {
         let storageData = loadTimersSets();
         const processedData = storageData.map(set => {
@@ -70,38 +159,19 @@ const Timers: React.FC = () => {
         });
 
         setTimersSets(processedData);
-        setSelectedTimersSet(processedData.length > 0 ? processedData[0] : undefined);
-        setSelectedTimer(processedData[0]?.timers[0] ?? undefined);
-
+        if (!selectedTimersSetId) { //Check if any route params are set
+            setSelectedTimersSet(processedData.length > 0 ? processedData[0] : undefined);
+            setSelectedTimer(processedData[0]?.timers[0] ?? undefined);
+        }
+        else
+            handleRoutChange(processedData);
     }, [])
 
     useEffect(() => {
         timersSets.forEach(set =>
             set.timers.forEach(timer => {
                 activeTimersRegistry.set(timer.id, timer);
-                timer.onFinish = () => {
-                    toast({
-                        titleText: 'Timer finished',
-                        children: timer.name,
-                        type: 'success',
-                        autoClose: 6000,
-                        onClose: () => stopTimeoutSound()
-                    });
-                    showNotification(
-                        `Time Forge`,
-                        {
-                            body: `Timer ${timer.name} from timer set ${set.name} finished.`,
-                            icon: '/TimeForge/favicon.svg',
-                            silent: false
-                        }
-                    );
-                    navigate('/timers', { replace: true });
-                    if (!isPlaying()) { //Other timer not played
-                        playTimeoutSound();
-                        setSelectedTimersSet(set);
-                        setSelectedTimer(timer);
-                    }
-                }
+                timer.onFinish = () => finishTimerCallback(timer, set);
             }));
 
         setActiveTimers(activeTimersRegistry);
@@ -126,15 +196,15 @@ const Timers: React.FC = () => {
 
     return (
         <div id="timers">
-            {selectedTimersSet && selectedTimer && 
+            {selectedTimersSet && selectedTimer &&
                 <>
-                    <TimerMenu timersSets={timersSets} selectedTimersSet={selectedTimersSet} setSelectedCallback={setTimersSetAndFirstTimer} />
+                    <TimerMenu timersSets={timersSets} selectedTimersSet={selectedTimersSet} setSelectedCallback={setTimersSetAndFirstTimerWithRoute} />
                     <div id="timers-content">
                         <TimersList
                             timersSet={selectedTimersSet}
                             selectedTimer={selectedTimer}
                             isSelectedTimerActive={isSelectedTimerActive}
-                            selectTimerCallback={setSelectedTimer}
+                            selectTimerCallback={setTimerAndItsSetWithRoute}
                             startTimerCallback={startTimerCallback}
                             resetTimerCallback={resetTimerCallback}
                         />
@@ -170,7 +240,10 @@ const Timers: React.FC = () => {
                 </> ||
                 <div id="no-timers-message-container">
                     <h1 className="no-timers-message">No timers sets</h1>
-                    <h1 className="no-timers-message clickable" onClick={() => { setIsModalOpened(true); setModalState('add'); }}>Create new timers set</h1>
+                    <h1 className="no-timers-message clickable"
+                        onClick={() => { setIsModalOpened(true); setModalState('add'); }}>
+                        Create new timers set
+                    </h1>
                 </div>
             }
 
@@ -180,37 +253,18 @@ const Timers: React.FC = () => {
                 <AddTimerSetModal
                     isOpened={isModalOpened}
                     onClose={() => setIsModalOpened(false)}
-                    addTimersSetCallback={(t) => {
-                        console.debug('add timers set: ', t);
-                        timersSets.push(t);
-                        saveTimersSet(t)
-                        setTimersSets([...timersSets]);
-                        if (!selectedTimersSet)
-                            setTimersSetAndFirstTimer(t);
-                    }} /> ||
+                    addTimersSetCallback={addSetCallback} /> ||
                 isModalOpened && modalState === 'edit' && selectedTimersSet &&
                 <EditTimersSetModal
                     isOpened={isModalOpened}
                     onClose={() => setIsModalOpened(false)}
                     timersSet={selectedTimersSet}
-                    editTimersSetCallback={(t) => {
-                        console.debug('edit timers set: ', t);
-                        const newTimersSets = timersSets.map(ts => ts.id === t.id ? t : ts);
-                        saveTimersSet(t);
-                        setTimersSetAndFirstTimer(t);
-                        setTimersSets([...newTimersSets]);
-                    }} /> ||
+                    editTimersSetCallback={editSetCallback} /> ||
                 isModalOpened && modalState === 'delete' && selectedTimersSet &&
                 <DeleteTimersSetModal
                     isOpened={isModalOpened}
                     onClose={() => setIsModalOpened(false)}
-                    deleteTimersSetCallback={() => {
-                        console.debug('delete timers set: ', selectedTimersSet);
-                        const newTimersSets = timersSets.filter(ts => ts.id !== selectedTimersSet.id);
-                        deleteTimersSet(selectedTimersSet.id);
-                        setTimersSetAndFirstTimer(newTimersSets.length > 0 ? newTimersSets[0] : undefined);
-                        setTimersSets([...newTimersSets]);
-                    }} />
+                    deleteTimersSetCallback={() => deleteSetCallback(selectedTimersSet)} />
             }
         </div >
     )

@@ -65,11 +65,6 @@ function setScrolling(ref: React.RefObject<HTMLDivElement | null>) {
 
 const TimerMenu: React.FC<Props> = ({ timersSets, selectedTimersSet, setSelectedCallback }) => {
     const ref = useRef<HTMLDivElement>(null);
-    // console.log('TimerMenu render:', {
-    //     timersSetLength: timersSets?.length || 0,
-    //     selectedTimerSetId: selectedTimersSet?.id,
-    //     selectedTimerSetName: selectedTimersSet?.name
-    // });
     useEffect(() => {
         return setScrolling(ref);
     }, []);

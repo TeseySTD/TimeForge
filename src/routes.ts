@@ -10,7 +10,7 @@ const router = createBrowserRouter(
       Component: App,
       children: [
         { path: "/", Component: Home },
-        { path: "timers", Component: Timers }
+        { path: "timers/:timersSetId?/:timerId?", Component: Timers }
       ],
     },
   ],
