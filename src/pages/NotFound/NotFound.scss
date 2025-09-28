@@ -1,0 +1,95 @@
+#not-found {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    box-sizing: border-box;
+    user-select: none;
+
+    .nf-card {
+        text-align: center;
+        max-width: 720px;
+    }
+
+
+    .nf-code {
+        font-size: clamp(48px, 12vw, 180px);
+        margin: 0;
+        line-height: 0.9;
+        font-weight: 700;
+        display: inline-block;
+        transform-origin: center;
+        animation: nf-bounce 2.2s ease-in-out infinite;
+    }
+
+
+    .nf-msg {
+        margin: 12px 0 8px;
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+
+    .nf-sub {
+        margin: 0 0 16px;
+        font-size: 14px;
+    }
+
+
+    .nf-controls {
+        margin-top: 18px;
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+    }
+
+
+    button {
+        padding: 10px 14px;
+        border-radius: 8px;
+        border: 1px solid transparent;
+        background: none;
+        color: inherit;
+        cursor: pointer;
+        font-weight: 600;
+    }
+
+
+    button:hover {
+        transform: translateY(-2px);
+    }
+
+
+    @keyframes nf-bounce {
+        0% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-8px);
+        }
+
+        100% {
+            transform: translateY(0);
+        }
+    }
+
+
+    @media (prefers-reduced-motion: reduce) {
+        .nf-code {
+            animation: none;
+        }
+
+        button {
+            transition: none;
+        }
+    }
+
+
+    @media (max-width: 520px) {
+        .nf-msg {
+            font-size: 16px;
+        }
+    }
+}
