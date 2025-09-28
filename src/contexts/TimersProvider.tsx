@@ -1,7 +1,7 @@
 import Timer from "@/types/timer";
 import TimersSet from "@/types/timersSet";
 import type React from "react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { TimersContext, type lastSelectedDataType } from "./TimersContext";
 import { getAllTimersSets, saveTimersSet } from "@/utils/storageUtils";
 

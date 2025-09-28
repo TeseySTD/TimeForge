@@ -5,7 +5,7 @@
 
     #timers-content {
         display: flex;
-        width: calc(100% + 75px); //toolbar width
+        width: 100%; 
         flex-direction: row;
         gap: 10px;
         margin-top: 5px;

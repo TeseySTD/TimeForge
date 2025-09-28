@@ -4,6 +4,7 @@ import type TimersSet from '@/types/timersSet';
 import type Timer from '@/types/timer';
 import TimerView from '@/components/timers/TimerView/TimerView';
 import IconButton from '@/components/ui/IconButton/IconButton';
+import { HorizontalScrollArea } from '@/components/ui/HorizontalScrollArea/HorizontalScrollArea';
 
 interface Props {
     timersSet: TimersSet;
@@ -27,21 +28,23 @@ const TimersList: React.FC<Props> = (
     return (
         <div id='timers-list'>
             <div id='timers-list-header'>
-                {
-                    timersSet.timers.map((timer, index) => (
-                        <span key={timer.id}>
-                            <span
-                                className={`timer-name ${selectedTimer === timer ? 'selected' : ''}`}
-                                onClick={() => selectTimerCallback(timer)}
-                            >
-                                {timer.name}
+                <HorizontalScrollArea selectedIndex={timersSet.timers.findIndex((timer) => timer.id === selectedTimer.id)}>
+                    {
+                        timersSet.timers.map((timer, index) => (
+                            <span key={timer.id}>
+                                <span
+                                    className={`timer-name ${selectedTimer === timer ? 'selected' : ''}`}
+                                    onClick={() => selectTimerCallback(timer)}
+                                >
+                                    {timer.name}
+                                </span>
+                                {index < timersSet.timers.length - 1 && (
+                                    <span className="divider">|</span>
+                                )}
                             </span>
-                            {index < timersSet.timers.length - 1 && (
-                                <span className="divider">|</span>
-                            )}
-                        </span>
-                    ))
-                }
+                        ))
+                    }
+                </HorizontalScrollArea>
             </div>
             <div id='timers-list-body'>
                 <TimerView timer={selectedTimer} />

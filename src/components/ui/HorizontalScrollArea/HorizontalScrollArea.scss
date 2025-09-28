@@ -1,0 +1,26 @@
+.horizontal-scroll-area {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: pan-y;
+    -webkit-overflow-scrolling: auto;
+    overscroll-behavior: none;
+
+    cursor: grab;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    scrollbar-width: none;
+
+    &.grabbing {
+        cursor: grabbing;
+    }
+
+}

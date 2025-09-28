@@ -1,7 +1,7 @@
  #timers-list {
      background-color: var(--color-surface);
      width: 100%;
-     flex: 1;
+     flex: 0 0 100%;
      height: 350px;
      display: flex;
      flex-direction: column;
@@ -10,9 +10,6 @@
 
      #timers-list-header,
      #timers-list-footer {
-         display: flex;
-         align-items: center;
-         justify-content: space-evenly;
          padding-top: 15px;
          padding-bottom: 20px;
          margin: 0;
@@ -21,12 +18,12 @@
      }
 
      #timers-list-header {
-         overflow-x: scroll;
          border-radius: 20px 20px 0 0;
          border-bottom: 1px solid var(--color-border);
 
          .timer-name {
-             padding: 8px 12px;
+             display: inline-block;
+             padding: 8px 10px;
              cursor: pointer;
              border-radius: 8px;
              transition: all 0.2s ease;
@@ -67,12 +64,15 @@
      }
 
      #timers-list-footer {
+         display: flex;
+         align-items: center;
+         justify-content: space-evenly;
          border-radius: 0 0 20px 20px;
          border-top: 1px solid var(--color-border);
      }
  }
- 
- .no-timers{
+
+ .no-timers {
      padding: 20px;
      text-align: center;
      color: var(--color-text-secondary);

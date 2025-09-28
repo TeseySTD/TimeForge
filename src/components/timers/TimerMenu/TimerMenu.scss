@@ -1,26 +1,8 @@
 #timer-menu {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
     background-color: var(--color-brand-primary);
     border-radius: 10px;
     font-size: 17px;
     line-height: 1px;
-
-    padding: 0px 10px;
-    overflow-x: scroll;
-    white-space: nowrap;
-    cursor: grab;
-
-    &::-webkit-scrollbar {
-        display: none;
-    }
-
-    scrollbar-width: none;
-
-    &.grabbing {
-        cursor: grabbing;
-    }
 
     .set {
         padding: 0px 20px;
