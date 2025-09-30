@@ -71,6 +71,21 @@
     }
 }
 
+.settings-wrapper {
+    display: flex;
+    align-items: center;
+
+    svg {
+        color: var(--color-background);
+        transition: all 0.3s ease;
+
+        &:hover {
+            cursor: pointer;
+            color: var(--color-background-hover);
+        }
+    }
+}
+
 .nav-item {
     position: relative;
     padding: 8px 12px;
@@ -125,11 +140,18 @@
         flex-direction: column;
         gap: 15px;
 
-        .theme-toggle-wrapper {
+        .tools-wrapper {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             margin-top: 20px;
+
+            align-items: center;
+
+            &>* {
+                margin-bottom: 10px;
+            }
         }
+
     }
 }
 
@@ -168,7 +190,8 @@
             display: flex;
         }
     }
-    .side-menu{
+
+    .side-menu {
         display: block;
     }
 }

@@ -18,7 +18,7 @@ const ThemeToggle: React.FC<Props> = ({ className }) => {
     const debouncedToggleTheme = useThrottling(toggleTheme);
 
     return (
-        <div className={"theme-toggle " + className} title='Toggle theme'>
+        <div className={`theme-toggle ${className || ""}`} title='Toggle theme'>
             <Switch
                 switchEventHandler={debouncedToggleTheme}
                 checked={!isDarkTheme}

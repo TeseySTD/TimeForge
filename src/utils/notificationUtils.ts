@@ -1,3 +1,5 @@
+import { getNotificationsSetting } from "./settingsUtils";
+
 export function requestNotificationPermission(): Promise<NotificationPermission> {
     return Notification.requestPermission();
 }
@@ -18,7 +20,7 @@ export function showNotification(title: string, options?: NotificationOptions): 
         return null;
     }
     
-    if (Notification.permission === 'granted') {
+    if (Notification.permission === 'granted' && getNotificationsSetting()) {
         try {
             const notification = new Notification(title, options);
             
