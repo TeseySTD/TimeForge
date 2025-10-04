@@ -81,7 +81,7 @@
 
         &:hover {
             cursor: pointer;
-            color: var(--color-background-hover);
+            color: inherit;
         }
     }
 }
@@ -96,7 +96,7 @@
     transition: all 0.3s ease;
 
     &:hover {
-        color: inherit;
+        color: var(--color-text-primary);
         background: rgba(255, 255, 255, 0.05);
     }
 
@@ -107,13 +107,18 @@
 
     &.mobile {
         display: block;
-        padding: 12px 20px;
+        border: none;
         margin: 0;
         text-decoration: none;
         border-radius: 25px;
         text-align: center;
 
-        border: solid 1px rgba(255, 255, 255, 0.2);
+
+        &.active {
+            .nav-icon {
+                color: var(--color-text-primary);
+            }
+        }
     }
 
 }
@@ -123,7 +128,7 @@
     display: none;
     top: 0;
     left: -280px;
-    width: 200px;
+    width: 100px;
     height: 100vh;
     background-color: var(--color-brand-primary);
     z-index: 999;

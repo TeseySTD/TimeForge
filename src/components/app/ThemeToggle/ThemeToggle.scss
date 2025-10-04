@@ -2,25 +2,32 @@
     position: relative;
     display: flex;
     align-items: center;
-    
+
     .theme-switch {
         .slider {
             background: linear-gradient(45deg, #2d1b69, #11101d);
 
             &::before {
-                background: linear-gradient(45deg, #6c7293, #9ca3af);
-                content:"🌙" ;
-             }
+                content: '';
+                background-image: url('@/assets/icons/moon.svg');
+                background-size: contain;
+                background-repeat: no-repeat;
+                background-position: center;
+                background-color: transparent
+            }
 
         }
-        
-        input:checked + .slider {
+
+        input:checked+.slider {
             background: linear-gradient(45deg, #ffd700, #ff6b35);
-            
+
             &::before {
-                background: linear-gradient(45deg, #fff, #f0f0f0);
-                box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-                content: "☀️";
+                content: '';
+                background-image: url('@/assets/icons/sun.svg');
+                background-size: 24px 24px;
+                background-repeat: no-repeat;
+                background-position: center;
+                background-color: transparent
             }
         }
     }

@@ -9,7 +9,19 @@
     .container{
         display: flex;
         justify-content: flex-start;
+        color: var(--color-text-primary);
         margin-left: 10px;
         margin-right: 10px;
+        
+        a{
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+
+        .f-icon{
+            width: 25px;
+            height: 25px;
+        }
     }
 }
