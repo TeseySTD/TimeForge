@@ -1,4 +1,5 @@
 export const DEFAULT_VOLUME = 50
+export const DEFAULT_NOTIFICATIONS = true
 
 export const addVolumeSetting = (volume: number) => {
     localStorage.setItem('app.settings.volume', String(volume))

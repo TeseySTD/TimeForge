@@ -33,6 +33,7 @@ html[data-theme='dark'] {
     /* Interactive colors */
     --color-accent: #{$purple-light};
     --color-accent-hover: #{$purple};
+    --color-accent-text: #{$off-white};
     --color-link: #{$purple-light};
     --color-link-hover: #{$purple};
     
@@ -73,6 +74,7 @@ html[data-theme='light'] {
     /* Interactive colors */
     --color-accent: #{$gray-900};
     --color-accent-hover: #{$gray-700};
+    --color-accent-text: #{$off-white};
     --color-link: #{$blue-dark};
     --color-link-hover: #{$blue};
     

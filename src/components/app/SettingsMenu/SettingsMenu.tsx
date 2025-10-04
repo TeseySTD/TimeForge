@@ -3,7 +3,8 @@ import { useState, useEffect, useContext } from 'react'
 import './SettingsMenu.scss'
 import { ModalWindow } from '@/components/ui/ModalWindow/ModalWindow'
 import { SoundContext } from '@/contexts/SoundContext'
-import { addNotificationsSetting, addVolumeSetting, DEFAULT_VOLUME, getNotificationsSetting, getVolumeSetting } from '@/utils/settingsUtils'
+import { addNotificationsSetting, addVolumeSetting, DEFAULT_NOTIFICATIONS, DEFAULT_VOLUME, getNotificationsSetting, getVolumeSetting } from '@/utils/settingsUtils'
+import Button from '@/components/ui/Button/Button'
 
 interface Props {
     isOpened: boolean
@@ -26,7 +27,7 @@ const SettingsMenu: React.FC<Props> = ({ isOpened, onClose }) => {
 
     const onReset = () => {
         setVolume(DEFAULT_VOLUME)
-        setNotificationsEnabled(true)
+        setNotificationsEnabled(DEFAULT_NOTIFICATIONS)
     }
 
     return (
@@ -47,7 +48,7 @@ const SettingsMenu: React.FC<Props> = ({ isOpened, onClose }) => {
                             onChange={(e) => setVolume(Number(e.target.value))}
                             aria-label="Volume"
                         />
-                        <span className="sm-value">{volume}%</span>
+                        <span className="sm-range-value">{volume}%</span>
                     </div>
                 </section>
 
@@ -64,8 +65,8 @@ const SettingsMenu: React.FC<Props> = ({ isOpened, onClose }) => {
                 </section>
 
                 <div className="sm-actions">
-                    <button className="sm-btn" type="button" onClick={onReset}>Reset</button>
-                    <button className="sm-btn sm-btn-primary" type="button" onClick={onClose}>Close</button>
+                    <Button className="sm-btn" type="button" onClick={onReset}>Reset</Button>
+                    <Button className="sm-btn sm-btn-primary" type="button" onClick={onClose}>Close</Button>
                 </div>
             </ModalWindow>
         </div>
