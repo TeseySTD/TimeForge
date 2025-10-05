@@ -13,14 +13,22 @@ function setScrolling(ref: React.RefObject<HTMLDivElement | null>) {
     let startX = 0;
     let startLeft = 0;
     let isDragging = false;
-    let hasMoved = false;
+    let lastDragEndTime = 0;
     const DRAG_THRESHOLD = 5;
+    const CLICK_BLOCK_TIME = 50; 
+    
+    const globalClickHandler = (e: Event) => {
+        const timeSinceLastDrag = Date.now() - lastDragEndTime;
+        if (timeSinceLastDrag < CLICK_BLOCK_TIME && el.contains(e.target as Node)) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+        }
+    };
     
     const onMouseDown = (e: MouseEvent) => {
         if (e.button !== 0) return; // Only left mouse button 
         
         isDragging = true;
-        hasMoved = false;
         startX = e.clientX;
         startLeft = el.scrollLeft;
         
@@ -34,78 +42,54 @@ function setScrolling(ref: React.RefObject<HTMLDivElement | null>) {
         
         const deltaX = startX - e.clientX;
         
-        if (Math.abs(deltaX) > DRAG_THRESHOLD && !hasMoved) {
-            hasMoved = true;
+        if (Math.abs(deltaX) > DRAG_THRESHOLD) {
             el.classList.add('grabbing');
-        }
-        
-        if (hasMoved) {
             el.scrollLeft = startLeft + deltaX;
         }
     };
     
-    const onMouseUp = () => {
-        if (isDragging && hasMoved) {
-            setTimeout(() => {
-                const blockNextClick = (e: Event) => {
-                    e.preventDefault();
-                    e.stopImmediatePropagation();
-                    el.removeEventListener('click', blockNextClick, true);
-                };
-                el.addEventListener('click', blockNextClick, true);
-            }, 0);
+    const onMouseUp = (e: MouseEvent) => {
+        const wasDragging = isDragging && Math.abs(startX - e.clientX) > DRAG_THRESHOLD;
+        
+        if (wasDragging) {
+            lastDragEndTime = Date.now();
         }
         
         isDragging = false;
-        hasMoved = false;
         el.classList.remove('grabbing');
         
         document.removeEventListener('mousemove', onMouseMove);
         document.removeEventListener('mouseup', onMouseUp);
     };
     
-    // Touch events
     const onTouchStart = (e: TouchEvent) => {
         if (e.touches.length !== 1) return;
-        
         isDragging = true;
-        hasMoved = false;
         startX = e.touches[0].clientX;
         startLeft = el.scrollLeft;
     };
-    
+
     const onTouchMove = (e: TouchEvent) => {
         if (!isDragging || e.touches.length !== 1) return;
-        
         const deltaX = startX - e.touches[0].clientX;
-        
-        if (Math.abs(deltaX) > DRAG_THRESHOLD && !hasMoved) {
-            hasMoved = true;
+        if (Math.abs(deltaX) > DRAG_THRESHOLD) {
             e.preventDefault(); 
-        }
-        
-        if (hasMoved) {
-            e.preventDefault();
             el.scrollLeft = startLeft + deltaX;
         }
     };
-    
-    const onTouchEnd = () => {
-        if (isDragging && hasMoved) {
-            setTimeout(() => {
-                const blockNextClick = (e: Event) => {
-                    e.preventDefault();
-                    e.stopImmediatePropagation();
-                    el.removeEventListener('click', blockNextClick, true);
-                };
-                el.addEventListener('click', blockNextClick, true);
-            }, 0);
-        }
-        
+
+    const onTouchEnd = (e: TouchEvent) => {
+        const endX = e.changedTouches && e.changedTouches.length ? e.changedTouches[0].clientX : startX;
+        const wasDragging = isDragging && Math.abs(startX - endX) > DRAG_THRESHOLD;
+
+        if (wasDragging) lastDragEndTime = Date.now();
+
         isDragging = false;
-        hasMoved = false;
         el.classList.remove('grabbing');
     };
+
+    
+    document.addEventListener('click', globalClickHandler, true);
     
     el.addEventListener('mousedown', onMouseDown);
     el.addEventListener('touchstart', onTouchStart, { passive: false });
@@ -115,6 +99,7 @@ function setScrolling(ref: React.RefObject<HTMLDivElement | null>) {
     
     return () => {
         el.classList.remove('grabbing');
+        document.removeEventListener('click', globalClickHandler, true);
         el.removeEventListener('mousedown', onMouseDown);
         el.removeEventListener('touchstart', onTouchStart);
         el.removeEventListener('touchmove', onTouchMove);
