@@ -1,3 +1,5 @@
+@use "@/styles/variables" as *;
+
 #settings-menu {
   .sm-title {
     margin: 0 0 12px;
@@ -163,14 +165,15 @@
   }
 
 
-  @media (max-width: 520px) {
-    .sm-volume-row {
-      gap: 8px;
-    }
+  @media (max-width: $small-width) {
+    font-size: calc(100% - 2px);
 
-    .sm-range {
-      width: 160px;
+    .sm-volume-row {
+      gap: 1px;
+
+      .sm-range {
+        width: 200px;
+      }
     }
   }
-
 }

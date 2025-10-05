@@ -1,11 +1,11 @@
+@use "@/styles/variables" as *;
+
 .delete-timer-set-modal {
     display: flex;
     flex-direction: column;
     gap: 16px;
-    padding: 20px;
-    min-width: 400px;
 
-    .buttons {
+    .dm-buttons {
         display: flex;
         flex-direction: row;
         gap: 30px;
@@ -23,6 +23,12 @@
                 background-color: var(--color-error-hover);
                 filter: drop-shadow(0 0 3px var(--color-error-hover));
             }
+        }
+    }
+
+    @media screen and (max-width: $small-width) {
+        .dm-title{
+            margin-top: 25px;
         }
     }
 }

@@ -1,3 +1,5 @@
+@use '@/styles/variables' as *;
+
 .modal-overlay {
     position: fixed;
     inset: 0;
@@ -27,7 +29,7 @@
 .modal-card {
     width: 100%;
     max-width: 540px;
-    max-height: calc(100vh - 64px);
+    margin: auto;
     background: var(--color-surface, #fff);
     color: var(--color-text-primary, #111);
     border-radius: 12px;
@@ -89,13 +91,13 @@
     background: var(--color-surface-hover, rgba(0, 0, 0, 0.04));
 }
 
-.modal-body {}
+.modal-body {
+    height: fit-content;
+}
 
-@media (max-width: 600px) {
+@media (max-width: $middle-width) {
     .modal-card {
         width: 75%;
-        height: 75%;
-        max-height: none;
         border-radius: 8px;
         padding: 16px;
     }
@@ -104,4 +106,13 @@
         align-items: flex-end;
         background: linear-gradient(180deg, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.6));
     }
+}
+
+@media screen and (max-width: $small-width) {
+    .modal-card {
+        max-width: ($small-width - 100px);
+        border-radius: 8px;
+        padding: 10px;
+    }
+    
 }

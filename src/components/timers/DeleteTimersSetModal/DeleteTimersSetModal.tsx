@@ -9,8 +9,8 @@ interface Props extends ModalWindowProps {
 const DeleteTimersSetModal: React.FC<Props> = ({ isOpened, onClose, deleteTimersSetCallback }) => {
     return (
         <ModalWindow isOpened={isOpened} onClose={onClose} className="delete-timer-set-modal">
-            <h2>Are you sure you want to delete this timer set?</h2>
-            <div className="buttons">
+            <h2 className='dm-title'>Are you sure you want to delete this timer set?</h2>
+            <div className="dm-buttons">
                 <Button onClick={onClose}>Cancel</Button>
                 <Button className='delete' onClick={() => {
                     deleteTimersSetCallback();
