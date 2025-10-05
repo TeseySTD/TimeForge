@@ -11,6 +11,7 @@
   font-size: 14px;
   line-height: 1.4;
   overflow: hidden;
+  user-select: none;
 
   animation: toast-in 260ms cubic-bezier(.2, .9, .2, 1);
 

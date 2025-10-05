@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import './TimerView.scss'
 import Timer from '@/types/timer';
 import { parseSecondsToTimeString } from '@/utils/timeUtils';
+import useToast from '@/hooks/useToast';
 
 interface Props {
     timer: Timer;
@@ -16,6 +17,8 @@ const TimerView: React.FC<Props> = ({ timer }) => {
 
     const timerRef = useRef<Timer>(timer);
     timerRef.current = timer;
+
+    const [toast] = useToast();
 
     const renderOnTick = (t: Timer) => {
         const canBeRendered = t.id === timerRef.current.id; //Check if the timer is selected
@@ -35,6 +38,16 @@ const TimerView: React.FC<Props> = ({ timer }) => {
         );
     }
 
+    const copyTimeOnClick = async (time: string) => {
+        try {
+            await navigator.clipboard.writeText(time);
+            toast({titleText: 'Copied to clipboard', children: time, type: 'success', autoClose: 3000});
+        } catch (err) {
+            console.error(err);
+            toast({titleText: 'Failed to copy', children: time, type: 'error', autoClose: 3000});
+        }
+    }
+
     useEffect(() => {
         timer.onTick = renderOnTick;
         timer.onReset = renderOnTick;
@@ -45,7 +58,7 @@ const TimerView: React.FC<Props> = ({ timer }) => {
     return (
         <div className='timer-view'>
             <h2>{timer.name}</h2>
-            <div className='time-section'>
+            <div className='time-section' onClick={() => copyTimeOnClick(time.time)}>
                 <span>{time.time}</span>
             </div>
             <div className='progress-container'>
