@@ -1,5 +1,6 @@
 import { useState } from "react";
 import ThemeContext from "./ThemeContext";
+import { getThemeSetting } from "@/utils/settingsUtils";
 
 interface Props {
   children?: React.ReactNode;
@@ -7,7 +8,7 @@ interface Props {
 
 
 const ThemeProvider: React.FC<Props> = ({ children }) => {
-  const [isDarkTheme, setDarkTheme] = useState(true);
+  const [isDarkTheme, setDarkTheme] = useState(getThemeSetting());
 
   const toggleThemeHandler = () => {
     setDarkTheme((prevState) => !prevState);
@@ -18,6 +19,7 @@ const ThemeProvider: React.FC<Props> = ({ children }) => {
       value={{
         isDarkTheme: isDarkTheme,
         toggleTheme: toggleThemeHandler,
+        setTheme: setDarkTheme
       }}
     >
       {children}
