@@ -1,3 +1,5 @@
+@use "@/styles/variables" as *;
+
 #home {
     margin-top: 10%;
 
@@ -11,5 +13,33 @@
 
     .logo:hover {
         filter: drop-shadow(0 0 2em var(--color-logo-shine));
+    }
+}
+
+@media screen and (max-width: $middle-width) {
+    #home {
+        font-size: calc(100% - 2px);
+    }
+
+}
+
+@media screen and (max-width: $small-width) {
+    #home {
+        font-size: calc(100% - 2px);
+
+        .logo {
+            height: 10em;
+        }
+    }
+}
+
+@media screen and (max-height: $middle-height) {
+    #home {
+        margin-top: 5%;
+        font-size: calc(100% - 4px);
+
+        .logo {
+            height: 14em;
+        }
     }
 }
