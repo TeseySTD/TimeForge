@@ -1,3 +1,5 @@
+ @use "@/styles/variables" as *;
+ 
  #timers-list {
      background-color: var(--color-surface);
      width: 100%;
@@ -79,4 +81,17 @@
      font-weight: 600;
      font-size: 25px;
      user-select: none;
+ }
+ 
+ @media screen and (max-width: $middle-width) {
+     #timers-list {
+         height: 320px;
+     }
+ }
+ 
+ @media screen and (max-width: $small-width) {
+     #timers-list {
+         height: 300px;
+     }
+    
  }

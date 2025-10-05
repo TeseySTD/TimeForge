@@ -1,3 +1,5 @@
+@use "@/styles/variables" as *;
+
 .timer-view {
     user-select: none;
 
@@ -57,10 +59,28 @@
     }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: $middle-width) {
     .timer-view {
         .time-section {
-            font-size: 80px;
+            font-size: 75px;
         }
     }
+}
+
+@media screen and (max-width: $small-width) {
+    .timer-view {
+        .time-section {
+            font-size: 60px;
+        }
+    }
+    
+}
+
+@media screen and (max-width: $tiny-width) {
+    .timer-view {
+        .time-section {
+            font-size: 50px;
+        }
+    }
+    
 }

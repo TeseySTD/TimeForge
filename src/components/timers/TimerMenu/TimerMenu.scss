@@ -1,7 +1,8 @@
 #timer-menu {
     background-color: var(--color-brand-primary);
     border-radius: 10px;
-    font-size: 17px;
+    font-size: calc(100% + 1px);
+    font-weight: 600;
     line-height: 1px;
 
     .set {
