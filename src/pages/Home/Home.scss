@@ -14,32 +14,53 @@
     .logo:hover {
         filter: drop-shadow(0 0 2em var(--color-logo-shine));
     }
-}
 
-@media screen and (max-width: $middle-width) {
-    #home {
+    @media screen and (max-width: $middle-width) and (min-height: $middle-height) {
+        margin-top: 20%;;
         font-size: calc(100% - 2px);
     }
 
-}
-
-@media screen and (max-width: $small-width) {
-    #home {
+    @media screen and (max-width: $small-width) and (min-height: $middle-height) {
+        margin-top: 30%;
         font-size: calc(100% - 2px);
 
         .logo {
             height: 10em;
         }
     }
-}
 
-@media screen and (max-height: $middle-height) {
-    #home {
+    @media screen and (max-height: $middle-height) and (min-height: $small-height) {
         margin-top: 5%;
         font-size: calc(100% - 4px);
 
         .logo {
             height: 14em;
+        }
+
+    }
+
+    @media screen and (max-height: $small-height) and (min-height: $tiny-height) {
+        margin-top: 5%;
+        font-size: calc(100% - 5px);
+
+
+        @media screen and (max-height: ($small-height - 30px)) {
+            font-size: calc(100% - 6px);
+
+        }
+
+        .logo {
+            height: 12em;
+        }
+    }
+
+    @media screen and (max-height: $tiny-height) {
+        margin-top: 5%;
+        font-size: calc(100% - 8px);
+
+
+        .logo {
+            height: 12em;
         }
     }
 }
