@@ -15,7 +15,7 @@
         background-color: transparent;
         border-radius: 3px;
         overflow: hidden;
-        margin-top:10px;
+        margin-top: 10px;
 
         .progress-bar {
             height: 100%;
@@ -43,9 +43,42 @@
             }
         }
     }
+
+    @media screen and (max-width: $middle-width) {
+        .time-section {
+            font-size: 75px;
+        }
+    }
+
+    @media screen and (max-width: $small-width) {
+        .time-section {
+            font-size: 60px;
+        }
+    }
+
+    @media screen and (max-width: $tiny-width) {
+        .time-section {
+            font-size: 55px;
+        }
+    }
+
+
+    @media screen and (max-height: $small-height) {
+        .time-section {
+            font-size: 70px;
+        }
+    }
+
+    @media screen and (max-height: $tiny-height) {
+        .time-section {
+            font-size: 55px;
+        }
+        
+    }
 }
 
 @keyframes shine {
+
     0%,
     100% {
         opacity: 0;
@@ -56,30 +89,4 @@
         opacity: 1;
         transform: translateX(0);
     }
-}
-
-@media screen and (max-width: $middle-width) {
-    .timer-view {
-        .time-section {
-            font-size: 75px;
-        }
-    }
-}
-
-@media screen and (max-width: $small-width) {
-    .timer-view {
-        .time-section {
-            font-size: 60px;
-        }
-    }
-    
-}
-
-@media screen and (max-width: $tiny-width) {
-    .timer-view {
-        .time-section {
-            font-size: 50px;
-        }
-    }
-    
 }

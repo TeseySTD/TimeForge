@@ -1,5 +1,5 @@
  @use "@/styles/variables" as *;
- 
+
  #timers-list {
      background-color: var(--color-surface);
      width: 100%;
@@ -62,6 +62,7 @@
          line-height: 1px;
          display: flex;
          align-items: center;
+         justify-content: center;
          flex-direction: column;
      }
 
@@ -72,6 +73,120 @@
          border-radius: 0 0 20px 20px;
          border-top: 1px solid var(--color-border);
      }
+
+     @media screen and (max-width: $middle-width) {
+         height: 320px;
+
+         #timers-list-header {
+             padding-top: 5px;
+             padding-bottom: 10px;
+         }
+
+         #timers-list-footer {
+             padding: 5px;
+
+             button {
+                 width: 40px;
+                 height: 30px;
+             }
+         }
+     }
+
+     @media screen and (max-width: $small-width) {
+         height: 300px;
+
+         #timers-list-header {
+             padding-top: 5px;
+             padding-bottom: 10px;
+
+             .timer-name {
+                 padding: 6px 8px;
+                 font-size: calc(100% - 2px);
+             }
+         }
+
+         #timers-list-footer {
+             padding: 3px;
+
+             button {
+                 width: 40px;
+                 height: 30px;
+             }
+         }
+     }
+
+     @media screen and (max-width: $tiny-width) {
+         height: 280px;
+
+         #timers-list-header {
+             .timer-name {
+                 padding: 4px 6px;
+                 font-size: calc(100% - 3px);
+             }
+         }
+
+         #timers-list-footer {
+             padding: 3px;
+
+             button {
+                 width: 35px;
+                 height: 25px;
+             }
+         }
+     }
+
+     @media screen and (max-height: $small-height) {
+         height: 220px;
+
+         #timers-list-header {
+             padding-top: 5px;
+             padding-bottom: 5px;
+
+             .timer-name {
+                 padding: 4px 5px;
+             }
+         }
+
+         #timers-list-body {
+             padding: 10px;
+         }
+
+         #timers-list-footer {
+             padding: 3px;
+
+             button {
+                 width: 40px;
+                 height: 30px;
+             }
+         }
+     }
+
+     @media screen and (max-height: $tiny-height) {
+         height: 180px;
+
+         #timers-list-header {
+             padding-top: 3px;
+             padding-bottom: 3px;
+
+             .timer-name {
+                 padding: 2px 2.5px;
+                 font-size: calc(100% - 2px);
+             }
+         }
+
+         #timers-list-body {
+             padding: 5px;
+         }
+
+         #timers-list-footer {
+             padding: 2px;
+
+             button {
+                 width: 35px;
+                 height: 25px;
+             }
+         }
+     }
  }
 
  .no-timers {
@@ -81,17 +196,4 @@
      font-weight: 600;
      font-size: 25px;
      user-select: none;
- }
- 
- @media screen and (max-width: $middle-width) {
-     #timers-list {
-         height: 320px;
-     }
- }
- 
- @media screen and (max-width: $small-width) {
-     #timers-list {
-         height: 300px;
-     }
-    
  }

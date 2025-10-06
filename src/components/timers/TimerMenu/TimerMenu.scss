@@ -1,3 +1,5 @@
+@use "@/styles/variables" as *;
+
 #timer-menu {
     background-color: var(--color-brand-primary);
     border-radius: 10px;
@@ -12,15 +14,47 @@
         border-radius: 20px;
         user-select: none;
         background-color: var(--color-surface);
-        border: 3px solid transparent; 
+        border: 3px solid transparent;
         transition: all 0.2s ease;
 
 
         &:hover {
             background-color: var(--color-surface-hover);
         }
+
         &.selected {
             border: 3px solid var(--color-border-hover);
         }
+    }
+
+
+    @media screen and (max-width: $small-width) {
+        font-size: calc(100% - 2px);
+        
+        .set{
+            margin: 5px;
+            padding: 0px 17px;
+        }
+        
+    }
+
+
+    @media screen and (max-height: $small-height) {
+        font-size: calc(100% - 1px);
+        
+        .set{
+            margin: 5px;
+            padding: 0px 17px;
+        }
+    }
+
+    @media screen and (max-height: $tiny-height) {
+        font-size: calc(100% - 3px);
+
+        .set{
+            margin: 3px;
+            padding: 0px 15px;
+        }
+        
     }
 }
