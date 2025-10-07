@@ -1,6 +1,9 @@
 @use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
 
 #home {
+    @include smooth-appearance;   
+     
     margin-top: 10%;
 
     .logo {

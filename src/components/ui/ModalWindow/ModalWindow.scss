@@ -29,6 +29,7 @@
 .modal-card {
     width: 100%;
     max-width: 540px;
+    max-height: calc(100vh - 100px);
     margin: auto;
     background: var(--color-surface, #fff);
     color: var(--color-text-primary, #111);

@@ -1,6 +1,9 @@
 @use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
 
 #timers {
+    @include smooth-appearance;
+
     margin: auto;
     margin-top: 5%;
     width: 500px;

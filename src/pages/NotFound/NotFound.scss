@@ -1,6 +1,9 @@
 @use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
 
 #not-found {
+    @include smooth-appearance;
+
     display: flex;
     align-items: center;
     justify-content: center;

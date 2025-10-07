@@ -2,7 +2,7 @@ import './Timers.scss'
 import TimerMenu from "@/components/timers/TimerMenu/TimerMenu"
 import TimersSet from '@/types/timersSet';
 import Timer from '@/types/timer';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import IconButton from '@/components/ui/IconButton/IconButton';
 import AddTimerSetModal from '@/components/timers/AddTimersSetModal/AddTimersSetModal';
 import EditTimersSetModal from '@/components/timers/EditTimersSetModal/EditTimersSetModal';
@@ -25,6 +25,7 @@ const Timers: React.FC = () => {
     const [isSelectedTimerActive, setIsSelectedTimerActive] = useState(false);
     const [isModalOpened, setIsModalOpened] = useState(false);
     const [modalState, setModalState] = useState<'add' | 'edit' | 'delete'>('add');
+    const isVisible = useRef(false);
     const [toast] = useToast();
     const { play: playTimeoutSound, stop: stopTimeoutSound, isPlaying } = useSound(lofiAlert);
     const navigate = useNavigate();
@@ -144,6 +145,9 @@ const Timers: React.FC = () => {
 
 
     useEffect(() => {
+        if(!isVisible.current) {
+            isVisible.current = true;
+        }
         let storageData = loadTimersSets();
         const processedData = storageData.map(set => {
             const processedTimers = set.timers.map(timer => {
@@ -208,7 +212,7 @@ const Timers: React.FC = () => {
     }, [isModalOpened]);
 
     return (
-        <div id="timers">
+        <div id="timers" className={isVisible.current ? 'visible' : ''}>
             {selectedTimersSet && selectedTimer &&
                 <>
                     <TimerMenu timersSets={timersSets} selectedTimersSet={selectedTimersSet} setSelectedCallback={setTimersSetAndFirstTimerWithRoute} />

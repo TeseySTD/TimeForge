@@ -1,4 +1,5 @@
 @use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
 
 .about-container {
     min-height: 100vh;
@@ -19,7 +20,7 @@
     padding-bottom: 40px;
     border-bottom: 2px solid var(--color-border);
 
-    h1{
+    h1 {
         line-height: unset;
     }
 }
@@ -132,12 +133,13 @@
     display: flex;
     gap: 24px;
     align-items: flex-start;
+    text-align: left;
 }
 
 .step-wrapper {
     display: flex;
     gap: 24px;
-    align-items: flex-start;
+    align-items: center;
     width: 100%;
     padding: 28px;
     background: var(--color-surface);
@@ -250,17 +252,11 @@
 
 // Scroll animations
 .animate-on-scroll {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-
-    &.visible {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    @include smooth-appearance;
 }
 
 @media (prefers-reduced-motion: reduce) {
+
     .feature-card,
     .use-case-item,
     .step-wrapper {
@@ -499,11 +495,11 @@
     }
 
     .about-header {
-        margin-bottom: 48px;
+        margin-bottom: 70px;
     }
 
     .about-section {
-        margin-bottom: 48px;
+        margin-bottom: 70px;
     }
 
     .about-cta {

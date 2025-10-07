@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './ModalWindow.scss'
+import { createPortal } from 'react-dom'
 
-export interface Props {
+export interface Props extends React.HTMLAttributes<HTMLDivElement> {
     isOpened: boolean
     onClose: () => void
     children?: React.ReactNode
@@ -13,7 +14,8 @@ export const ModalWindow: React.FC<Props> = (
         isOpened,
         onClose,
         children,
-        className = ""
+        className = "",
+        ...props
     }
 ) => {
     const modalRef = useRef<HTMLDivElement | null>(null)
@@ -61,7 +63,7 @@ export const ModalWindow: React.FC<Props> = (
 
     if (!isVisible) return null
 
-    return (
+    return createPortal(
         <div
             className="modal-overlay"
             ref={overlayRef}
@@ -74,12 +76,14 @@ export const ModalWindow: React.FC<Props> = (
                 tabIndex={-1}
                 onMouseDown={e => e.stopPropagation()}
                 onClick={e => e.stopPropagation()}
+                {...props}
             >
                 <button className="modal-close" aria-label="Close" onClick={onCloseModal}>
                     ×
                 </button>
                 <div className="modal-body">{children}</div>
             </div>
-        </div>
+        </div>,
+        document.body
     )
 }

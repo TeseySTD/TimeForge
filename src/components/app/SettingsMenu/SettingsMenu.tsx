@@ -13,7 +13,7 @@ interface Props {
 
 const SettingsMenu: React.FC<Props> = ({ isOpened, onClose }) => {
     const [volume, setVolume] = useState<number>(getVolumeSetting())
-    const {setGlobalVolume} = useContext(SoundContext);
+    const { setGlobalVolume } = useContext(SoundContext);
     const [notificationsEnabled, setNotificationsEnabled] = useState<boolean>(getNotificationsSetting())
 
     useEffect(() => {
@@ -31,45 +31,43 @@ const SettingsMenu: React.FC<Props> = ({ isOpened, onClose }) => {
     }
 
     return (
-        <div id="settings-menu">
-            <ModalWindow isOpened={isOpened} onClose={onClose}>
-                <h2 className="sm-title">Settings</h2>
+        <ModalWindow id='settings-menu' isOpened={isOpened} onClose={onClose}>
+            <h2 className="sm-title">Settings</h2>
 
-                <section className="sm-section">
-                    <label htmlFor="volume" className="sm-label">Volume</label>
-                    <div className="sm-volume-row">
-                        <input
-                            id="volume"
-                            className="sm-range"
-                            type="range"
-                            min={0}
-                            max={100}
-                            value={volume}
-                            onChange={(e) => setVolume(Number(e.target.value))}
-                            aria-label="Volume"
-                        />
-                        <span className="sm-range-value">{volume}%</span>
-                    </div>
-                </section>
-
-                <section className="sm-section">
-                    <label className="sm-checkbox">
-                        <input
-                            type="checkbox"
-                            checked={notificationsEnabled}
-                            onChange={(e) => setNotificationsEnabled(e.target.checked)}
-                        />
-                        <span className="sm-checkbox-label">Enable notifications</span>
-                    </label>
-                    <p className="sm-hint">If enabled, you will receive sound and visual alerts.</p>
-                </section>
-
-                <div className="sm-actions">
-                    <Button className="sm-btn" type="button" onClick={onReset}>Reset</Button>
-                    <Button className="sm-btn sm-btn-primary" type="button" onClick={onClose}>Close</Button>
+            <section className="sm-section">
+                <label htmlFor="volume" className="sm-label">Volume</label>
+                <div className="sm-volume-row">
+                    <input
+                        id="volume"
+                        className="sm-range"
+                        type="range"
+                        min={0}
+                        max={100}
+                        value={volume}
+                        onChange={(e) => setVolume(Number(e.target.value))}
+                        aria-label="Volume"
+                    />
+                    <span className="sm-range-value">{volume}%</span>
                 </div>
-            </ModalWindow>
-        </div>
+            </section>
+
+            <section className="sm-section">
+                <label className="sm-checkbox">
+                    <input
+                        type="checkbox"
+                        checked={notificationsEnabled}
+                        onChange={(e) => setNotificationsEnabled(e.target.checked)}
+                    />
+                    <span className="sm-checkbox-label">Enable notifications</span>
+                </label>
+                <p className="sm-hint">If enabled, you will receive sound and visual alerts.</p>
+            </section>
+
+            <div className="sm-actions">
+                <Button className="sm-btn" type="button" onClick={onReset}>Reset</Button>
+                <Button className="sm-btn sm-btn-primary" type="button" onClick={onClose}>Close</Button>
+            </div>
+        </ModalWindow>
     )
 }
 
