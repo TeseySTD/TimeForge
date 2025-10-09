@@ -34,9 +34,9 @@ export const SoundProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
   useEffect(() => {
     initializeAudio();
-    window.addEventListener("click", handleUserGesture, { once: true });
-    window.addEventListener("keydown", handleUserGesture, { once: true });
-    window.addEventListener("touchstart", handleUserGesture, { once: true });
+    window.addEventListener("click", handleUserGesture);
+    window.addEventListener("keydown", handleUserGesture);
+    window.addEventListener("touchstart", handleUserGesture);
 
     return () => {
       window.removeEventListener("click", handleUserGesture);
