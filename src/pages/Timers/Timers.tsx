@@ -15,6 +15,8 @@ import { showNotification } from '@/utils/notificationUtils';
 import { useNavigate, useParams } from 'react-router';
 import TimersList from '@/components/timers/TimersList/TimersList';
 import { TimersContext } from '@/contexts/TimersContext';
+import { is } from 'zod/locales';
+import { setVisibleWithDelay } from '@/utils/uiUtils';
 
 const Timers: React.FC = () => {
     const { loadTimersSets, activeTimers: activeTimersRegistry, setActiveTimers, lastSelected, setLastSelected } = useContext(TimersContext);
@@ -25,7 +27,7 @@ const Timers: React.FC = () => {
     const [isSelectedTimerActive, setIsSelectedTimerActive] = useState(false);
     const [isModalOpened, setIsModalOpened] = useState(false);
     const [modalState, setModalState] = useState<'add' | 'edit' | 'delete'>('add');
-    const isVisible = useRef(false);
+    const ref = useRef<HTMLDivElement>(null);
     const [toast] = useToast();
     const { play: playTimeoutSound, stop: stopTimeoutSound, isPlaying } = useSound(lofiAlert);
     const navigate = useNavigate();
@@ -145,9 +147,8 @@ const Timers: React.FC = () => {
 
 
     useEffect(() => {
-        if(!isVisible.current) {
-            isVisible.current = true;
-        }
+        setVisibleWithDelay(ref);
+
         let storageData = loadTimersSets();
         const processedData = storageData.map(set => {
             const processedTimers = set.timers.map(timer => {
@@ -212,7 +213,7 @@ const Timers: React.FC = () => {
     }, [isModalOpened]);
 
     return (
-        <div id="timers" className={isVisible.current ? 'visible' : ''}>
+        <div id="timers" ref={ref}>
             {selectedTimersSet && selectedTimer &&
                 <>
                     <TimerMenu timersSets={timersSets} selectedTimersSet={selectedTimersSet} setSelectedCallback={setTimersSetAndFirstTimerWithRoute} />

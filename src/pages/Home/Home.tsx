@@ -4,11 +4,12 @@ import logo from '@/assets/logo.svg'
 import { NavLink } from "react-router"
 import { useEffect, useRef } from "react"
 import { set } from "zod"
+import { setVisibleWithDelay } from "@/utils/uiUtils"
 const Home: React.FC = () => {
     const ref = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        ref.current?.classList.add('visible');
+        setVisibleWithDelay(ref);
     }, []);
 
     return (

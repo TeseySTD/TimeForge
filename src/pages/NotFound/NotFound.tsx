@@ -2,15 +2,16 @@ import type React from 'react'
 import './NotFound.scss'
 import { useNavigate } from 'react-router'
 import { useEffect, useRef } from 'react';
+import { setVisibleWithDelay } from '@/utils/uiUtils';
 
 const NotFound: React.FC = () => {
     const navigate = useNavigate();
     const ref = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        ref.current?.classList.add('visible');
+        setVisibleWithDelay(ref);
     }, []);
-    
+
     return (
         <div id="not-found" role="status" ref={ref} aria-label="Page not found">
             <div className="nf-card">
